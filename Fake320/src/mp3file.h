@@ -29,8 +29,10 @@ public:
     
 private:
     std::string fileName;
-    double samples[FFT_SIZE];
-    int sample_index = 0;
+    double samples[2][FFT_SIZE];
+    int index = 0, currentArray = 0;
+    
+    double sample[1152];
     
     AVFormatContext *formatContext = NULL;
     AVCodecContext *codecContext = NULL;
@@ -40,11 +42,11 @@ private:
     FILE *outFile;
     int frameCount = 0;
     int streamIndex = -1;
-
-
+    int gotFrame;
     
     bool openCodecContext();
-    int decodePacket(int *got_frame, int cached);
+    bool fft();
+    int decodePacket();
 };
 
 #endif /* defined(__Fake320__mp3file__) */

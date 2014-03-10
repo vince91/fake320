@@ -10,6 +10,9 @@
 #include <cstdint>
 #include <fstream>
 
+#define SHORT_MAX 32768.
+
+
 extern "C"
 {
 #include <libavformat/avformat.h>
@@ -25,7 +28,7 @@ Mp3File::Mp3File(const std::string & fileName)
 
 int Mp3File::decodeAndAnalyze()
 {
-    int ret = 1, got_frame, lenght;
+    int ret = 1, lenght;
     
     /* register all formats and codecs */
     av_register_all();
@@ -43,7 +46,7 @@ int Mp3File::decodeAndAnalyze()
     }
     
     if (openCodecContext()) {
-       outFile = fopen(outfile.c_str(), "wb");
+        outFile = fopen(outfile.c_str(), "wb");
         
         if (!outFile) {
             fprintf(stderr, "Could not open destination file %s\n", outfile.c_str());
@@ -58,7 +61,7 @@ int Mp3File::decodeAndAnalyze()
     if (!frame) {
         fprintf(stderr, "Could not allocate frame\n");
     }
-
+    
     av_init_packet(&packet);
     packet.data = NULL;
     packet.size = 0;
@@ -68,21 +71,20 @@ int Mp3File::decodeAndAnalyze()
         AVPacket orig_packet = packet;
         
         do {
-            lenght = decodePacket(&got_frame, 0);
+            lenght = decodePacket();
             if (lenght < 0)
                 break;
             packet.data += lenght;
             packet.size -= lenght;
-
+            
         } while (packet.size > 0);
         
         av_free_packet(&orig_packet);
     }
-
     
     avcodec_close(codecContext);
     avformat_close_input(&formatContext);
-
+    
     return ret;
 }
 
@@ -111,43 +113,82 @@ bool Mp3File::openCodecContext()
     return true;
 }
 
-int Mp3File::decodePacket(int *got_frame, int cached)
+int Mp3File::decodePacket()
 {
-    int ret = 0;
+    int ret = 0, saveIndex, saveCurrent;
     int decoded = packet.size;
-    *got_frame = 0;
+    gotFrame = 0;
+    double temp;
+    bool samplesComplete = false;
     
     /* decode audio frame */
-    ret = avcodec_decode_audio4(codecContext, frame, got_frame, &packet);
-    if (ret < 0) {
-        fprintf(stderr, "Error decoding audio frame (%s)\n", av_err2str(ret));
+    if ((ret = avcodec_decode_audio4(codecContext, frame, &gotFrame, &packet)) < 0) {
+        std::cerr << "Error decoding audio frame (" << av_err2str(ret) << ")\n";
         return ret;
     }
+    
     /* Some audio decoders decode only part of the packet, and have to be
      * called again with the remainder of the packet data.
      * Sample: fate-suite/lossless-audio/luckynight-partial.shn
      * Also, some decoders might over-read the packet. */
     decoded = FFMIN(ret, packet.size);
     
-    
-    if (*got_frame) {
+    if (gotFrame) {
         
         size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample(codecContext->sample_fmt);
-        printf("audio_frame%s n:%d nb_samples:%d pts:%s\n", cached ? "(cached)" : "",
-               frameCount++, frame->nb_samples,
-               av_ts2timestr(frame->pts, &codecContext->time_base));
         
-        if (frame->channels == 1)
+        //std::cout << "audio_frame n:" << frameCount++ << " nb_samples:" << frame->nb_samples << " pts:" << av_ts2timestr(frame->pts, &codecContext->time_base) << std::endl;
+        
+        saveIndex = index; saveCurrent = currentArray ;
+        
+        if (frame->channels >= 1) {
             /* mono */
-            fwrite(frame->extended_data[1], 1, unpadded_linesize, outFile);
-        else if (frame->channels == 2) {
-            /* stereo -> mono */
             for (int i = 0; i < frame->nb_samples; ++i) {
+                samples[currentArray][index++] = (short) (frame->extended_data[0][2 * i] | frame->extended_data[0][2 * i + 1] << 8) / SHORT_MAX;
                 
+                if (index == FFT_SIZE) {
+                    index = 0;
+                    if (currentArray == 1)
+                        currentArray = 0;
+                    else
+                        currentArray = 1;
+                    samplesComplete = true;
+                }
+            }
+            
+            
+            //fwrite(frame->extended_data[0], 1, unpadded_linesize, outFile);
+        }
+        
+        if (frame->channels == 2) {
+            /* stereo -> mono */
+            index = saveIndex; currentArray = saveCurrent;
+            
+            for (int i = 0; i < frame->nb_samples; ++i) {
+                temp = (short) (frame->extended_data[1][2 * i] | frame->extended_data[1][2 * i + 1] << 8) / SHORT_MAX;
+                temp = (temp + samples[currentArray][index]) / 2;
+                samples[currentArray][index++] = temp;
+                
+                if (index == FFT_SIZE) {
+                    index = 0;
+                    if (currentArray == 1)
+                        currentArray = 0;
+                    else
+                        currentArray = 1;
+                }
             }
         }
     }
     
-    return decoded;
+    if(samplesComplete)
+        fft();
     
+    return decoded;
+}
+
+bool Mp3File::fft()
+{
+    std::cout << "array complete" << ((currentArray) ? 0 : 1) << std::endl ;
+    
+    return true;
 }
