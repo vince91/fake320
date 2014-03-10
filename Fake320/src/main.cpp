@@ -7,12 +7,16 @@
 //
 
 #include <iostream>
+#include "mp3file.h"
+
+using namespace std;
 
 int main(int argc, const char * argv[])
 {
-
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    Mp3File mp3 = Mp3File("/Users/vincent/Documents/bangt2.mp3");
+    
+    mp3.decodeAndAnalyze();
+    
     return 0;
 }
 

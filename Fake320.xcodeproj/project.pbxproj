@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF0B2CCB18C08F7300BC44D2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF0B2CCA18C08F7300BC44D2 /* main.cpp */; };
-		BF0B2CCD18C08F7300BC44D2 /* Fake320.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF0B2CCC18C08F7300BC44D2 /* Fake320.1 */; };
+		BF84B64F18C0ADB70051B74C /* mp3file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF84B64C18C0ADB70051B74C /* mp3file.cpp */; };
+		BF84B65518C0E5B20051B74C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF84B65318C0E5B20051B74C /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +18,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				BF0B2CCD18C08F7300BC44D2 /* Fake320.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -26,8 +25,9 @@
 
 /* Begin PBXFileReference section */
 		BF0B2CC718C08F7300BC44D2 /* Fake320 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Fake320; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF0B2CCA18C08F7300BC44D2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		BF0B2CCC18C08F7300BC44D2 /* Fake320.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Fake320.1; sourceTree = "<group>"; };
+		BF84B64C18C0ADB70051B74C /* mp3file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mp3file.cpp; path = src/mp3file.cpp; sourceTree = "<group>"; };
+		BF84B64D18C0ADB70051B74C /* mp3file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mp3file.h; path = src/mp3file.h; sourceTree = "<group>"; };
+		BF84B65318C0E5B20051B74C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +60,9 @@
 		BF0B2CC918C08F7300BC44D2 /* Fake320 */ = {
 			isa = PBXGroup;
 			children = (
-				BF0B2CCA18C08F7300BC44D2 /* main.cpp */,
-				BF0B2CCC18C08F7300BC44D2 /* Fake320.1 */,
+				BF84B64C18C0ADB70051B74C /* mp3file.cpp */,
+				BF84B64D18C0ADB70051B74C /* mp3file.h */,
+				BF84B65318C0E5B20051B74C /* main.cpp */,
 			);
 			path = Fake320;
 			sourceTree = "<group>";
@@ -117,7 +118,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF0B2CCB18C08F7300BC44D2 /* main.cpp in Sources */,
+				BF84B65518C0E5B20051B74C /* main.cpp in Sources */,
+				BF84B64F18C0ADB70051B74C /* mp3file.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,14 +197,44 @@
 		BF0B2CD118C08F7300BC44D2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/vincent/Documents/Xcode/Fake320/Fake320/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lavcodec",
+					"-lavformat",
+					"-lavutil",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
 		BF0B2CD218C08F7300BC44D2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/vincent/Documents/Xcode/Fake320/Fake320/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lavcodec",
+					"-lavformat",
+					"-lavutil",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
@@ -225,6 +257,7 @@
 				BF0B2CD218C08F7300BC44D2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
