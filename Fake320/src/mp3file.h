@@ -15,34 +15,38 @@
 extern "C"
 {
 #include <libavformat/avformat.h>
+#include <fftw3.h>
 }
 
-#define FFT_SIZE 65536
+#define FFT_NBITS 16
 
 class Mp3File
 {
 public:
-    Mp3File(const std::string & fileName);
+    Mp3File(std::string fileName);
+    ~Mp3File();
+    
     std::string getFilename() const { return fileName; }
     int decodeAndAnalyze();
-    std::string outfile = "/Users/vincent/Documents/test";
     
 private:
-    std::string fileName;
-    double samples[2][FFT_SIZE];
-    int index = 0, currentArray = 0;
+    std::string fileName, outfileName = "/Users/vincent/Documents/MATLAB/fake320/out";
+
+    double **samples;
+    fftw_complex *fftOut;
+    double *fftMagnitude;
     
-    double sample[1152];
+    int index = 0, currentArray = 0, fftSize, frameCount = 0, fftCount = 0;
     
     AVFormatContext *formatContext = NULL;
     AVCodecContext *codecContext = NULL;
     AVPacket packet;
     AVFrame *frame = NULL;
     AVStream *stream = NULL;
+    int streamIndex = -1, gotFrame;
+    
     FILE *outFile;
-    int frameCount = 0;
-    int streamIndex = -1;
-    int gotFrame;
+    std::fstream st;
     
     bool openCodecContext();
     bool fft();

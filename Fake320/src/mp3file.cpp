@@ -8,22 +8,41 @@
 
 #include "mp3file.h"
 #include <cstdint>
+#include <cmath>
 #include <fstream>
+#include <sstream>
 
 #define SHORT_MAX 32768.
-
 
 extern "C"
 {
 #include <libavformat/avformat.h>
-#include <libavutil/imgutils.h>
-#include <libavutil/samplefmt.h>
-#include <libavutil/timestamp.h>
+#include <fftw3.h>
 }
 
-Mp3File::Mp3File(const std::string & fileName)
+Mp3File::Mp3File(std::string fileName)
 {
     this->fileName = fileName;
+
+    fftSize = pow(2, FFT_NBITS);
+
+    samples = new double*[2];
+    samples[0] = new double[(int) fftSize];
+    samples[1] = new double[(int) fftSize];
+    
+    fftOut = new fftw_complex[fftSize/2 + 1];
+    fftMagnitude = new double[fftSize/2 + 1];
+    
+    st.open("/Users/vincent/Documents/MATLAB/fake320/test.txt", std::fstream::out);
+    if (!st.is_open())
+        std::cout << "pas ouvert !!!";
+    
+}
+
+Mp3File::~Mp3File()
+{
+    st.close();
+    
 }
 
 int Mp3File::decodeAndAnalyze()
@@ -46,10 +65,10 @@ int Mp3File::decodeAndAnalyze()
     }
     
     if (openCodecContext()) {
-        outFile = fopen(outfile.c_str(), "wb");
+        outFile = fopen(outfileName.c_str(), "wb");
         
         if (!outFile) {
-            fprintf(stderr, "Could not open destination file %s\n", outfile.c_str());
+            fprintf(stderr, "Could not open destination file %s\n", outfileName.c_str());
             ret = 0;
         }
     }
@@ -81,6 +100,8 @@ int Mp3File::decodeAndAnalyze()
         
         av_free_packet(&orig_packet);
     }
+    
+    std::cout << "Frames: " << frameCount << ", FFTs:" << fftCount << std::endl;
     
     avcodec_close(codecContext);
     avformat_close_input(&formatContext);
@@ -127,17 +148,13 @@ int Mp3File::decodePacket()
         return ret;
     }
     
-    /* Some audio decoders decode only part of the packet, and have to be
-     * called again with the remainder of the packet data.
-     * Sample: fate-suite/lossless-audio/luckynight-partial.shn
-     * Also, some decoders might over-read the packet. */
     decoded = FFMIN(ret, packet.size);
     
     if (gotFrame) {
         
-        size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample(codecContext->sample_fmt);
+        frameCount++;
         
-        //std::cout << "audio_frame n:" << frameCount++ << " nb_samples:" << frame->nb_samples << " pts:" << av_ts2timestr(frame->pts, &codecContext->time_base) << std::endl;
+        size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample(codecContext->sample_fmt);
         
         saveIndex = index; saveCurrent = currentArray ;
         
@@ -146,18 +163,15 @@ int Mp3File::decodePacket()
             for (int i = 0; i < frame->nb_samples; ++i) {
                 samples[currentArray][index++] = (short) (frame->extended_data[0][2 * i] | frame->extended_data[0][2 * i + 1] << 8) / SHORT_MAX;
                 
-                if (index == FFT_SIZE) {
+                if (index == fftSize) {
                     index = 0;
-                    if (currentArray == 1)
-                        currentArray = 0;
-                    else
-                        currentArray = 1;
+                    currentArray = (currentArray == 1) ? 0 : 1;
                     samplesComplete = true;
                 }
             }
             
             
-            //fwrite(frame->extended_data[0], 1, unpadded_linesize, outFile);
+            fwrite(frame->extended_data[0], 1, unpadded_linesize, outFile);
         }
         
         if (frame->channels == 2) {
@@ -169,16 +183,14 @@ int Mp3File::decodePacket()
                 temp = (temp + samples[currentArray][index]) / 2;
                 samples[currentArray][index++] = temp;
                 
-                if (index == FFT_SIZE) {
+                if (index == fftSize) {
                     index = 0;
-                    if (currentArray == 1)
-                        currentArray = 0;
-                    else
-                        currentArray = 1;
+                    currentArray = (currentArray == 1) ? 0 : 1;
                 }
             }
         }
     }
+    
     
     if(samplesComplete)
         fft();
@@ -188,7 +200,28 @@ int Mp3File::decodePacket()
 
 bool Mp3File::fft()
 {
-    std::cout << "array complete" << ((currentArray) ? 0 : 1) << std::endl ;
+    /* fft analysis */
+    
+    int index = (currentArray) ? 0 : 1;
+    ++fftCount;
+    
+    fftw_plan plan = fftw_plan_dft_r2c_1d(fftSize, samples[index], fftOut, FFTW_ESTIMATE);
+    fftw_execute(plan);
+    
+    for (int i = 0; i < (fftSize/2 + 1); ++i) {
+        fftMagnitude[i] = fftOut[i][0]*fftOut[i][0] + fftOut[i][1]*fftOut[i][1];
+    }
+    
+    if(fftCount == 1) {
+        for (int i = 0; i < (fftSize/2 + 1); ++i) {
+            st << fftMagnitude[i] << ",";
+        }
+        
+        std::cout << fftMagnitude[fftSize/2 ];
+    }
+    
+    
     
     return true;
 }
+

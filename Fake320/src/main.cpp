@@ -8,15 +8,16 @@
 
 #include <iostream>
 #include "mp3file.h"
+#include <fftw3.h>
 
 using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    Mp3File mp3 = Mp3File("/Users/vincent/Documents/bangt2.mp3");
+    Mp3File mp3("/Users/vincent/Documents/short.mp3");
     
     mp3.decodeAndAnalyze();
-    
+
     return 0;
 }
 

@@ -4,7 +4,7 @@ CXX=g++
 
 INCLUDES=-I./include
 CFLAGS=$(INCLUDES) -c -std=c++11 
-LIBS=-lavcodec -lavutil -lavformat
+LIBS=-lavcodec -lavutil -lavformat -lfftw3
 LDFLAGS=-L./lib $(LIBS)
 
 EXEC=fake320
