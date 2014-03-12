@@ -21,6 +21,11 @@ all: $(EXEC)
 $(EXEC): $(OBJ)
 	$(CXX) $(LDFLAGS) $(OBJ) -o $@
 
+$(OBJ): | $(OBJDIR)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 
