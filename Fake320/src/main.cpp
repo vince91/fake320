@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include "mp3file.h"
-#include <fftw3.h>
 
 using namespace std;
 

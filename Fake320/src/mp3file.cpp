@@ -10,7 +10,6 @@
 #include <cstdint>
 #include <cmath>
 #include <fstream>
-#include <sstream>
 
 #define SHORT_MAX 32768.
 
