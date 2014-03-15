@@ -7,11 +7,11 @@ CFLAGS=$(INCLUDES) -c -std=c++11
 LIBS=-lavcodec -lavutil -lavformat -lfftw3
 LDFLAGS=$(LIBS)
 
-EXEC=fake320
+EXEC=fake
 SRCDIR=Fake320
 
 SRC=$(wildcard $(SRCDIR)/*.cpp)
-OBJ=$(SRC:.cpp:.o)
+OBJ=$(SRC:.cpp=.o)
 
 ############################
 
