@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF84B64F18C0ADB70051B74C /* mp3file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF84B64C18C0ADB70051B74C /* mp3file.cpp */; };
-		BF84B65518C0E5B20051B74C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF84B65318C0E5B20051B74C /* main.cpp */; };
+		BFC5998518D4C25000F5BE94 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC5998218D4C25000F5BE94 /* main.cpp */; };
+		BFC5998618D4C25000F5BE94 /* mp3file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC5998318D4C25000F5BE94 /* mp3file.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,9 +25,9 @@
 
 /* Begin PBXFileReference section */
 		BF0B2CC718C08F7300BC44D2 /* Fake320 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Fake320; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF84B64C18C0ADB70051B74C /* mp3file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mp3file.cpp; path = src/mp3file.cpp; sourceTree = "<group>"; };
-		BF84B64D18C0ADB70051B74C /* mp3file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mp3file.h; path = src/mp3file.h; sourceTree = "<group>"; };
-		BF84B65318C0E5B20051B74C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
+		BFC5998218D4C25000F5BE94 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		BFC5998318D4C25000F5BE94 /* mp3file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mp3file.cpp; sourceTree = "<group>"; };
+		BFC5998418D4C25000F5BE94 /* mp3file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mp3file.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +60,9 @@
 		BF0B2CC918C08F7300BC44D2 /* Fake320 */ = {
 			isa = PBXGroup;
 			children = (
-				BF84B64C18C0ADB70051B74C /* mp3file.cpp */,
-				BF84B64D18C0ADB70051B74C /* mp3file.h */,
-				BF84B65318C0E5B20051B74C /* main.cpp */,
+				BFC5998218D4C25000F5BE94 /* main.cpp */,
+				BFC5998318D4C25000F5BE94 /* mp3file.cpp */,
+				BFC5998418D4C25000F5BE94 /* mp3file.h */,
 			);
 			path = Fake320;
 			sourceTree = "<group>";
@@ -118,8 +118,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF84B65518C0E5B20051B74C /* main.cpp in Sources */,
-				BF84B64F18C0ADB70051B74C /* mp3file.cpp in Sources */,
+				BFC5998618D4C25000F5BE94 /* mp3file.cpp in Sources */,
+				BFC5998518D4C25000F5BE94 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,8 +200,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					/usr/local/include,
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/Users/vincent/Documents/Xcode/Fake320/Fake320/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -224,8 +224,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					/usr/local/include,
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/Users/vincent/Documents/Xcode/Fake320/Fake320/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
