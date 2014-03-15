@@ -12,13 +12,17 @@
 #include <iostream>
 #include <fstream>
 
+#define SHORT_MAX 32768.
+#define FFT_NBITS 11
+#define FFT_SIZE 2048
+#define FFTMEANS_SIZE 12
+#define FFT_CORRECTION 4./(FFT_SIZE*FFT_SIZE)
+
 extern "C"
 {
 #include <libavformat/avformat.h>
 #include <fftw3.h>
 }
-
-#define FFT_NBITS 16
 
 class Mp3File
 {
@@ -32,11 +36,12 @@ public:
 private:
     std::string fileName, outfileName = "/Users/vincent/Documents/MATLAB/fake320/out";
 
-    double **samples;
-    fftw_complex *fftOut;
-    double *fftMagnitude;
+    double samples[2][FFT_SIZE];
+    fftw_complex fftOut[FFT_SIZE/2 + 1];
+    double fftMagnitude[FFT_SIZE/2 + 1];
     
-    int index = 0, currentArray = 0, fftSize, frameCount = 0, fftCount = 0;
+    int index = 0, currentArray = 0, frameCount = 0, fftCount = 0;
+    double fftMeans[FFTMEANS_SIZE], fftMeansDiff[FFTMEANS_SIZE - 1], counter[FFTMEANS_SIZE - 1] = {0};
     
     AVFormatContext *formatContext = NULL;
     AVCodecContext *codecContext = NULL;
@@ -49,7 +54,7 @@ private:
     std::fstream st;
     
     bool openCodecContext();
-    bool fft();
+    bool fftAnalysis();
     int decodePacket();
 };
 

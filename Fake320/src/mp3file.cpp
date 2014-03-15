@@ -11,7 +11,8 @@
 #include <cmath>
 #include <fstream>
 
-#define SHORT_MAX 32768.
+#define BAND_INTERVAL 23
+#define BAND_START_INDEX 674
 
 extern "C"
 {
@@ -22,26 +23,15 @@ extern "C"
 Mp3File::Mp3File(std::string fileName)
 {
     this->fileName = fileName;
-
-    fftSize = pow(2, FFT_NBITS);
-
-    samples = new double*[2];
-    samples[0] = new double[(int) fftSize];
-    samples[1] = new double[(int) fftSize];
-    
-    fftOut = new fftw_complex[fftSize/2 + 1];
-    fftMagnitude = new double[fftSize/2 + 1];
     
     st.open("/Users/vincent/Documents/MATLAB/fake320/test.txt", std::fstream::out);
     if (!st.is_open())
         std::cout << "pas ouvert !!!";
-    
 }
 
 Mp3File::~Mp3File()
 {
     st.close();
-    
 }
 
 int Mp3File::decodeAndAnalyze()
@@ -73,7 +63,7 @@ int Mp3File::decodeAndAnalyze()
     }
     
     /* dump mp3 info to stderr */
-    av_dump_format(formatContext, 0, fileName.c_str(), 0);
+    //av_dump_format(formatContext, 0, fileName.c_str(), 0);
     
     frame = av_frame_alloc();
     if (!frame) {
@@ -101,6 +91,17 @@ int Mp3File::decodeAndAnalyze()
     }
     
     std::cout << "Frames: " << frameCount << ", FFTs:" << fftCount << std::endl;
+    
+    int maxIndex = 0, maxValue = 0;
+    for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
+        std::cout << counter[i] << ",";
+        if (counter[i] >= maxValue) {
+            maxIndex = i;
+            maxValue = counter[maxIndex];
+        }
+    }
+
+    std::cout << std::endl << "Max:" << maxIndex << "(" << ((maxIndex+1)*500+14500) << ") :" << maxValue << "(" << 100.*maxValue/fftCount << "%)" << std::endl;
     
     avcodec_close(codecContext);
     avformat_close_input(&formatContext);
@@ -161,14 +162,13 @@ int Mp3File::decodePacket()
             /* mono */
             for (int i = 0; i < frame->nb_samples; ++i) {
                 samples[currentArray][index++] = (short) (frame->extended_data[0][2 * i] | frame->extended_data[0][2 * i + 1] << 8) / SHORT_MAX;
-                
-                if (index == fftSize) {
+            
+                if (index == FFT_SIZE) {
                     index = 0;
                     currentArray = (currentArray == 1) ? 0 : 1;
                     samplesComplete = true;
                 }
             }
-            
             
             fwrite(frame->extended_data[0], 1, unpadded_linesize, outFile);
         }
@@ -182,7 +182,7 @@ int Mp3File::decodePacket()
                 temp = (temp + samples[currentArray][index]) / 2;
                 samples[currentArray][index++] = temp;
                 
-                if (index == fftSize) {
+                if (index == FFT_SIZE) {
                     index = 0;
                     currentArray = (currentArray == 1) ? 0 : 1;
                 }
@@ -190,37 +190,68 @@ int Mp3File::decodePacket()
         }
     }
     
-    
     if(samplesComplete)
-        fft();
+        fftAnalysis();
     
     return decoded;
 }
 
-bool Mp3File::fft()
+bool Mp3File::fftAnalysis()
 {
-    /* fft analysis */
-    
     int index = (currentArray) ? 0 : 1;
     ++fftCount;
     
-    fftw_plan plan = fftw_plan_dft_r2c_1d(fftSize, samples[index], fftOut, FFTW_ESTIMATE);
+    fftw_plan plan = fftw_plan_dft_r2c_1d(FFT_SIZE, samples[index], fftOut, FFTW_ESTIMATE);
     fftw_execute(plan);
     
-    for (int i = 0; i < (fftSize/2 + 1); ++i) {
-        fftMagnitude[i] = fftOut[i][0]*fftOut[i][0] + fftOut[i][1]*fftOut[i][1];
+    for (int i = 0; i < (FFT_SIZE/2 + 1); ++i) {
+        fftMagnitude[i] = 10*log10(FFT_CORRECTION * (fftOut[i][0]*fftOut[i][0] + fftOut[i][1]*fftOut[i][1]));
     }
     
-    if(fftCount == 1) {
-        for (int i = 0; i < (fftSize/2 + 1); ++i) {
-            st << fftMagnitude[i] << ",";
+    for (int i = 0; i < FFTMEANS_SIZE; ++i) {
+        fftMeans[i] = 0;
+        for (int j = 0; j < BAND_INTERVAL; ++j) {
+            fftMeans[i] += fftMagnitude[BAND_START_INDEX + i*BAND_INTERVAL + j];
+        }
+        fftMeans[i] /= BAND_INTERVAL;
+    }
+    
+    /* differences between adjacente elements of fftMeans[] */
+    for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
+        fftMeansDiff[i] = fftMeans[i + 1] - fftMeans[i];
+    }
+    
+    double minValue = 0; int minIndex = 0;
+    
+    for (int i = 1; i < FFTMEANS_SIZE - 1; ++i) {
+        if (fftMeansDiff[i] < minValue) {
+            minValue = fftMeansDiff[i];
+            minIndex = i;
+        }
+    }
+    
+    if (minValue < -6) {
+        /*
+        bool valid = true;
+        for (int i = minIndex; i < FFTMEANS_SIZE && valid == true; ++i) {
+            if (fftMeans[i] > -70)
+                valid = false;
         }
         
-        std::cout << fftMagnitude[fftSize/2 ];
+        if (valid)*/
+            ++counter[minIndex];
+        
     }
     
     
+    if (fftCount == 3000) {
+        
+        st << fftMeans[0];
+        
+        for (int i = 1; i < FFTMEANS_SIZE - 1; ++i) {
+            st << "," << fftMeans[i];
+        }
+    }
     
     return true;
 }
-

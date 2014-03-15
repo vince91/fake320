@@ -13,7 +13,7 @@ using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    Mp3File mp3("/Users/vincent/Documents/short.mp3");
+    Mp3File mp3("/Users/vincent/Documents/MATLAB/freq/house.mp3");
     
     mp3.decodeAndAnalyze();
 
