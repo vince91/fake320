@@ -245,7 +245,6 @@ bool Mp3File::fftAnalysis()
     
     
     if (fftCount == 3000) {
-        
         st << fftMeans[0];
         
         for (int i = 1; i < FFTMEANS_SIZE - 1; ++i) {

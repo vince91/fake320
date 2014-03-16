@@ -8,14 +8,19 @@
 
 #include <iostream>
 #include "mp3file.h"
+#include "mp3library.h"
 
 using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    Mp3File mp3("/Users/vincent/Documents/MATLAB/freq/house.mp3");
+    /*Mp3File mp3("/Users/vincent/Documents/Xcode/Fake320/Music/bangt.mp3");
     
-    mp3.decodeAndAnalyze();
+    mp3.decodeAndAnalyze(); */
+
+    Mp3Library library("/Users/vincent/Music/MARS", false);
+    
+    library.analyzeFolder();
 
     return 0;
 }
