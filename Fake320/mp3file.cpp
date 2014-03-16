@@ -92,7 +92,7 @@ int Mp3File::decodeAndAnalyze()
     
     std::cout << "Frames: " << frameCount << ", FFTs:" << fftCount << std::endl;
     
-    int maxIndex = 0, maxValue = 0;
+    int maxIndex = 0, maxValue = counter[0];
     for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
         std::cout << counter[i] << ",";
         if (counter[i] >= maxValue) {
@@ -221,7 +221,7 @@ bool Mp3File::fftAnalysis()
         fftMeansDiff[i] = fftMeans[i + 1] - fftMeans[i];
     }
     
-    double minValue = 0; int minIndex = 0;
+    double minValue = fftMeansDiff[0]; int minIndex = 0;
     
     for (int i = 1; i < FFTMEANS_SIZE - 1; ++i) {
         if (fftMeansDiff[i] < minValue) {

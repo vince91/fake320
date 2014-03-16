@@ -14,13 +14,15 @@ using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    /*Mp3File mp3("/Users/vincent/Documents/Xcode/Fake320/Music/bangt.mp3");
+    //
+    Mp3File mp3("/Users/vincent/Documents/MATLAB/freq/mano.mp3");
     
-    mp3.decodeAndAnalyze(); */
+    mp3.decodeAndAnalyze();
+     //*/
 
-    Mp3Library library("/Users/vincent/Music/MARS", false);
+    /*Mp3Library library("/Users/vincent/Music/MARS", false);
     
-    library.analyzeFolder();
+    library.analyzeFolder();*/
 
     return 0;
 }
