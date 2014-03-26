@@ -11,17 +11,57 @@
 #include <errno.h>
 #include <vector>
 
+extern "C"
+{
+#include <libavformat/avformat.h>
+}
 
 bool Mp3Library::analyzeFolder()
 {
     /* analyses all 320kbps mp3s contained in list */
+    AVFormatContext *formatContext = NULL; AVCodecContext *codecContext = NULL;
+    bool keep;
+
     fillList(folder, recursive);
     
-    std::cout << list.size() << std::endl;
+    av_register_all();
+    
+    std::cout << list.size() << " files in the list before cleaning" << std::endl;
     
     for (std::list<std::string>::iterator it = list.begin(); it != list.end(); ++it) {
-        std::cout << *it << std::endl;
+        formatContext = NULL;
+        keep = false;
+        
+        //std::cout << *it << std::endl;
+        
+        /* open input file, and allocate format context */
+        if (avformat_open_input(&formatContext, it->c_str(), NULL, NULL) < 0) {
+            std::cerr << "Could not open source file (" << it->c_str() << ")\n";
+        }
+        else {
+            if (avformat_find_stream_info(formatContext, NULL) < 0) {
+                std::cerr << "Could not find stream information (" << it->c_str() << "\n";
+            }
+            else {
+                //av_dump_format(formatContext, 0, it->c_str(), 0);
+
+                codecContext = formatContext->streams[0]->codec;
+                if(codecContext != NULL) {
+                    if(codecContext->bit_rate >= 320000 && codecContext->codec_id == AV_CODEC_ID_MP3)
+                        keep = true;
+                    else {
+                        //std::cout << "___erase:" << *it << " " << codecContext->bit_rate << "-" <<codecContext->codec_id << std::endl;
+                    }
+                }
+            }
+        }
+        
+        if(keep == false) {
+            list.erase(it);
+        }
     }
+    
+    std::cout << list.size() << " files in the list after cleaning" << std::endl;
     
     return true;
 }
