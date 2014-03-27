@@ -20,46 +20,37 @@ extern "C"
 #include <fftw3.h>
 }
 
-Mp3File::Mp3File(std::string fileName)
+Mp3File::Mp3File(std::string filename)
 {
-    this->fileName = fileName;
-    
-    st.open("/Users/vincent/Documents/MATLAB/fake320/test.txt", std::fstream::out);
-    if (!st.is_open())
-        std::cout << "pas ouvert !!!";
+    this->filename = filename;
 }
 
 Mp3File::~Mp3File()
 {
-    st.close();
 }
 
-int Mp3File::decodeAndAnalyze()
+bool Mp3File::decodeAndAnalyze()
 {
-    int ret = 1, lenght;
+    int lenght;
     
     /* register all formats and codecs */
     av_register_all();
     
     /* open input file, and allocate format context */
-    if (avformat_open_input(&formatContext, fileName.c_str(), NULL, NULL) < 0) {
-        std::cerr << "Could not open source file (" << fileName << ")\n";
-        return 0;
+    if (avformat_open_input(&formatContext, filename.c_str(), NULL, NULL) < 0) {
+        std::cerr << "Could not open source file (" << filename << ")\n";
+        return false;
     }
     
     /* retrieve stream information */
     if (avformat_find_stream_info(formatContext, NULL) < 0) {
-        std::cerr << "Could not find stream information (" << fileName << "\n";
-        return 0;
+        std::cerr << "Could not find stream information (" << filename << ")\n";
+        return false;
     }
     
-    if (openCodecContext()) {
-        outFile = fopen(outfileName.c_str(), "wb");
-        
-        if (!outFile) {
-            fprintf(stderr, "Could not open destination file %s\n", outfileName.c_str());
-            ret = 0;
-        }
+    if (!openCodecContext()) {
+        std::cerr << "Could not open MP3 codec\n" << std::endl;
+        return false;
     }
     
     /* dump mp3 info to stderr */
@@ -90,23 +81,24 @@ int Mp3File::decodeAndAnalyze()
         av_free_packet(&orig_packet);
     }
     
-    std::cout << "Frames: " << frameCount << ", FFTs:" << fftCount << std::endl;
-    
     int maxIndex = 0, maxValue = counter[0];
     for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
-        std::cout << counter[i] << ",";
+        //std::cout << counter[i] << ",";
         if (counter[i] >= maxValue) {
             maxIndex = i;
             maxValue = counter[maxIndex];
         }
     }
 
-    std::cout << std::endl << "Max:" << maxIndex << "(" << ((maxIndex+1)*500+14500) << ") :" << maxValue << "(" << 100.*maxValue/fftCount << "%)" << std::endl;
+    cutOffFrequency = (maxIndex + 1)*500 + 14500;
+    rate = 100.*maxValue/fftCount;
+    
+    //std::cout << std::endl << "Max:" << maxIndex << "(" << ((maxIndex+1)*500+14500) << ") :" << maxValue << "(" << 100.*maxValue/fftCount << "%)" << std::endl;
     
     avcodec_close(codecContext);
     avformat_close_input(&formatContext);
     
-    return ret;
+    return true;
 }
 
 bool Mp3File::openCodecContext()
@@ -153,9 +145,7 @@ int Mp3File::decodePacket()
     if (gotFrame) {
         
         frameCount++;
-        
-        size_t unpadded_linesize = frame->nb_samples * av_get_bytes_per_sample(codecContext->sample_fmt);
-        
+                
         saveIndex = index; saveCurrent = currentArray ;
         
         if (frame->channels >= 1) {
@@ -170,7 +160,6 @@ int Mp3File::decodePacket()
                 }
             }
             
-            fwrite(frame->extended_data[0], 1, unpadded_linesize, outFile);
         }
         
         if (frame->channels == 2) {
@@ -243,14 +232,11 @@ bool Mp3File::fftAnalysis()
         
     }
     
-    
-    if (fftCount == 3000) {
-        st << fftMeans[0];
-        
-        for (int i = 1; i < FFTMEANS_SIZE - 1; ++i) {
-            st << "," << fftMeans[i];
-        }
-    }
-    
+
     return true;
+}
+
+void Mp3File::coutInformations() const
+{
+    std::cout << getFilename() << std::endl << "=> Cut-off frequency: " << cutOffFrequency << ", rate: " << rate << "% (frames: " << frameCount << ", FFTs:" << fftCount << ")\n";
 }

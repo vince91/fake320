@@ -27,14 +27,15 @@ extern "C"
 class Mp3File
 {
 public:
-    Mp3File(std::string fileName);
+    Mp3File(std::string);
     ~Mp3File();
     
-    std::string getFilename() const { return fileName; }
-    int decodeAndAnalyze();
+    std::string getFilename() const { return filename; }
+    bool decodeAndAnalyze();
+    void coutInformations() const;
     
 private:
-    std::string fileName, outfileName = "/Users/vincent/Documents/MATLAB/fake320/out";
+    std::string filename;
 
     double samples[2][FFT_SIZE];
     fftw_complex fftOut[FFT_SIZE/2 + 1];
@@ -49,9 +50,9 @@ private:
     AVFrame *frame = NULL;
     AVStream *stream = NULL;
     int streamIndex = -1, gotFrame;
-    
-    FILE *outFile;
-    std::fstream st;
+        
+    int cutOffFrequency;
+    double rate;
     
     bool openCodecContext();
     bool fftAnalysis();

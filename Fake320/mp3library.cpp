@@ -7,6 +7,7 @@
 //
 
 #include "mp3library.h"
+#include "mp3file.h"
 #include <dirent.h>
 #include <errno.h>
 #include <vector>
@@ -16,17 +17,17 @@ extern "C"
 #include <libavformat/avformat.h>
 }
 
-bool Mp3Library::analyzeFolder()
+bool Mp3Library::fillList()
 {
     /* analyses all 320kbps mp3s contained in list */
     AVFormatContext *formatContext = NULL; AVCodecContext *codecContext = NULL;
     bool keep;
 
-    fillList(folder, recursive);
+    seekMp3(folder, recursive);
     
     av_register_all();
     
-    std::cout << list.size() << " files in the list before cleaning" << std::endl;
+    std::cout << list.size() << " files in the list before cleaning\n\n";
     
     for (std::list<std::string>::iterator it = list.begin(); it != list.end(); ++it) {
         formatContext = NULL;
@@ -49,31 +50,36 @@ bool Mp3Library::analyzeFolder()
                 if(codecContext != NULL) {
                     if(codecContext->bit_rate >= 320000 && codecContext->codec_id == AV_CODEC_ID_MP3)
                         keep = true;
-                    else {
-                        //std::cout << "___erase:" << *it << " " << codecContext->bit_rate << "-" <<codecContext->codec_id << std::endl;
-                    }
                 }
             }
         }
         
         if(keep == false) {
+            //std::cout << "___erase:" << *it << " " << codecContext->bit_rate << "-" <<codecContext->codec_id << std::endl;
             list.erase(it);
         }
     }
     
-    std::cout << list.size() << " files in the list after cleaning" << std::endl;
+    std::cout << list.size() << " files in the list after cleaning\n\n";
+    
+    for (std::list<std::string>::iterator it = list.begin(); it != list.end(); ++it) {
+        mp3List.push_back(new Mp3File(*it));
+    }
     
     return true;
 }
 
-bool Mp3Library::fillList(std::string _folder, bool recursive)
+bool Mp3Library::seekMp3(std::string _folder, bool recursive)
 {
     /* adds all files contained in folder (recursively or not), whose extension is ".mp3", to list */
-    
-    DIR *d = NULL;
-    struct dirent *dir;
     std::string file;
     std::vector<std::string> folderList;
+
+#ifdef WIN32
+    
+#else
+    DIR *d = NULL;
+    struct dirent *dir;
     
     if ((d = opendir(_folder.c_str())) == NULL) {
         std::cerr << "Couldn't open dir: " << _folder << ", errno: " << errno << std::endl;
@@ -95,14 +101,32 @@ bool Mp3Library::fillList(std::string _folder, bool recursive)
     }
     
     closedir(d);
+#endif //#ifdef WIN32
     
     if (recursive) {
         for (std::vector<std::string>::iterator it = folderList.begin(); it != folderList.end(); ++it) {
-            fillList(*it, true);
+            seekMp3(*it, true);
         }
     }
     
     return true;
 }
 
+bool Mp3Library::analyzeMp3(int i)
+{
+    if (i >= mp3List.size()) {
+        std::cerr << "i exceeds list size\n";
+        return false;
+    }
+    
+    Mp3File *mp3 = mp3List[i];
+    
+    if (!mp3->decodeAndAnalyze()) {
+        std::cerr << "Could not analyze " << mp3->getFilename() << std::endl;
+        return false;
+    }
+    mp3->coutInformations();
+    
+    return true;
+}
 

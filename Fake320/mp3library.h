@@ -11,20 +11,24 @@
 
 #include <iostream>
 #include <list>
+#include <vector>
 #include "mp3file.h"
 
 class Mp3Library
 {
 public:
     Mp3Library(std::string _folder, bool _recursive) : folder(_folder), recursive(_recursive) {}
-    bool analyzeFolder();
-    bool fillList(std::string, bool);
-    
+    bool fillList();
+    bool analyzeMp3(int);
     
 private:
     bool recursive;
     std::string folder;
     std::list<std::string> list;
+    std::vector<Mp3File*> mp3List;
+    
+    bool seekMp3(std::string, bool);
+
 };
 
 #endif /* defined(__Fake320__mp3library__) */

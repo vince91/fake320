@@ -21,9 +21,11 @@ int main(int argc, const char * argv[])
      //*/
 
     //*/
-    Mp3Library library("/Users/vincent/Music/MARS", true);
+    //Mp3Library library("/Users/vincent/Music/MARS", false);
     
-    library.analyzeFolder();//*/
+    Mp3Library library("/Users/vincent/Music/MARS/Will and Ink - Wilson [VINYL]", false);
+    library.fillList();
+    library.analyzeMp3(0);//*/
 
     return 0;
 }
