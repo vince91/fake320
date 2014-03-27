@@ -17,12 +17,12 @@ extern "C"
 #include <libavformat/avformat.h>
 }
 
-bool Mp3Library::fillList()
+void Mp3Library::fillList()
 {
     /* analyses all 320kbps mp3s contained in list */
     AVFormatContext *formatContext = NULL; AVCodecContext *codecContext = NULL;
     bool keep;
-
+    
     seekMp3(folder, recursive);
     
     av_register_all();
@@ -45,7 +45,7 @@ bool Mp3Library::fillList()
             }
             else {
                 //av_dump_format(formatContext, 0, it->c_str(), 0);
-
+                
                 codecContext = formatContext->streams[0]->codec;
                 if(codecContext != NULL) {
                     if(codecContext->bit_rate >= 320000 && codecContext->codec_id == AV_CODEC_ID_MP3)
@@ -65,8 +65,6 @@ bool Mp3Library::fillList()
     for (std::list<std::string>::iterator it = list.begin(); it != list.end(); ++it) {
         mp3List.push_back(new Mp3File(*it));
     }
-    
-    return true;
 }
 
 bool Mp3Library::seekMp3(std::string _folder, bool recursive)
@@ -74,7 +72,7 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
     /* adds all files contained in folder (recursively or not), whose extension is ".mp3", to list */
     std::string file;
     std::vector<std::string> folderList;
-
+    
 #ifdef WIN32
     
 #else
@@ -95,7 +93,7 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
         }
         else if (dir->d_type == DT_REG) {
             if(file.substr(file.size()-4, file.size()-1).compare(".mp3") == 0)
-            list.push_back(file);
+                list.push_back(file);
         }
         
     }

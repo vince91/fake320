@@ -5,7 +5,7 @@ CXX=g++
 INCLUDES=
 CFLAGS=$(INCLUDES) -c -std=c++11 
 LIBS=-lavformat -lavcodec -lavutil -lfftw3
-LDFLAGS=$(LIBS)
+LDFLAGS=-L./lib $(LIBS)
 
 EXEC=fake
 SRCDIR=Fake320
@@ -18,7 +18,7 @@ OBJ=$(SRC:.cpp=.o)
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CXX) $(OBJ) -o $@ $(LDFLAGS) 
+	$(CXX) $(OBJ) $(LDFLAGS) -o $@
 
 $(SRCDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CFLAGS) $< -o $@

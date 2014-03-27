@@ -18,7 +18,7 @@ class Mp3Library
 {
 public:
     Mp3Library(std::string _folder, bool _recursive) : folder(_folder), recursive(_recursive) {}
-    bool fillList();
+    void fillList();
     bool analyzeMp3(int);
     
 private:

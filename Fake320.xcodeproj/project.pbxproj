@@ -211,7 +211,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/lib,
+					./lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lavcodec",
@@ -235,7 +235,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/lib,
+					./lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lavcodec",
