@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF7DAABB18E4EC6900E52C43"
+               BlueprintIdentifier = "BF7DAAFB18E4ED2800E52C43"
                BuildableName = "Fake320.app"
                BlueprintName = "Fake320"
                ReferencedContainer = "container:Fake320.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF7DAADC18E4EC6900E52C43"
+               BlueprintIdentifier = "BF7DAB1C18E4ED2800E52C43"
                BuildableName = "Fake320Tests.xctest"
                BlueprintName = "Fake320Tests"
                ReferencedContainer = "container:Fake320.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BF7DAABB18E4EC6900E52C43"
+            BlueprintIdentifier = "BF7DAAFB18E4ED2800E52C43"
             BuildableName = "Fake320.app"
             BlueprintName = "Fake320"
             ReferencedContainer = "container:Fake320.xcodeproj">
@@ -61,7 +61,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BF7DAABB18E4EC6900E52C43"
+            BlueprintIdentifier = "BF7DAAFB18E4ED2800E52C43"
             BuildableName = "Fake320.app"
             BlueprintName = "Fake320"
             ReferencedContainer = "container:Fake320.xcodeproj">
@@ -79,7 +79,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BF7DAABB18E4EC6900E52C43"
+            BlueprintIdentifier = "BF7DAAFB18E4ED2800E52C43"
             BuildableName = "Fake320.app"
             BlueprintName = "Fake320"
             ReferencedContainer = "container:Fake320.xcodeproj">

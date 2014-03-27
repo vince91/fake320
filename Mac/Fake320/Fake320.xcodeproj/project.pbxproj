@@ -1,0 +1,481 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF7DAB0018E4ED2800E52C43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF7DAAFF18E4ED2800E52C43 /* Cocoa.framework */; };
+		BF7DAB0A18E4ED2800E52C43 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF7DAB0818E4ED2800E52C43 /* InfoPlist.strings */; };
+		BF7DAB0C18E4ED2800E52C43 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BF7DAB0B18E4ED2800E52C43 /* main.m */; };
+		BF7DAB1018E4ED2800E52C43 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BF7DAB0E18E4ED2800E52C43 /* Credits.rtf */; };
+		BF7DAB1318E4ED2800E52C43 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF7DAB1218E4ED2800E52C43 /* AppDelegate.m */; };
+		BF7DAB1618E4ED2800E52C43 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7DAB1418E4ED2800E52C43 /* MainMenu.xib */; };
+		BF7DAB1818E4ED2800E52C43 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF7DAB1718E4ED2800E52C43 /* Images.xcassets */; };
+		BF7DAB1F18E4ED2800E52C43 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF7DAB1E18E4ED2800E52C43 /* XCTest.framework */; };
+		BF7DAB2018E4ED2800E52C43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF7DAAFF18E4ED2800E52C43 /* Cocoa.framework */; };
+		BF7DAB2818E4ED2800E52C43 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF7DAB2618E4ED2800E52C43 /* InfoPlist.strings */; };
+		BF7DAB2A18E4ED2800E52C43 /* Fake320Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF7DAB2918E4ED2800E52C43 /* Fake320Tests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BF7DAB2118E4ED2800E52C43 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF7DAAF418E4ED2800E52C43 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF7DAAFB18E4ED2800E52C43;
+			remoteInfo = Fake320;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BF7DAAFC18E4ED2800E52C43 /* Fake320.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fake320.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF7DAAFF18E4ED2800E52C43 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		BF7DAB0218E4ED2800E52C43 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		BF7DAB0318E4ED2800E52C43 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		BF7DAB0418E4ED2800E52C43 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BF7DAB0718E4ED2800E52C43 /* Fake320-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fake320-Info.plist"; sourceTree = "<group>"; };
+		BF7DAB0918E4ED2800E52C43 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BF7DAB0B18E4ED2800E52C43 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BF7DAB0D18E4ED2800E52C43 /* Fake320-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fake320-Prefix.pch"; sourceTree = "<group>"; };
+		BF7DAB0F18E4ED2800E52C43 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		BF7DAB1118E4ED2800E52C43 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BF7DAB1218E4ED2800E52C43 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BF7DAB1518E4ED2800E52C43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BF7DAB1718E4ED2800E52C43 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		BF7DAB1D18E4ED2800E52C43 /* Fake320Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Fake320Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF7DAB1E18E4ED2800E52C43 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		BF7DAB2518E4ED2800E52C43 /* Fake320Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fake320Tests-Info.plist"; sourceTree = "<group>"; };
+		BF7DAB2718E4ED2800E52C43 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BF7DAB2918E4ED2800E52C43 /* Fake320Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Fake320Tests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BF7DAAF918E4ED2800E52C43 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7DAB0018E4ED2800E52C43 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF7DAB1A18E4ED2800E52C43 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7DAB2018E4ED2800E52C43 /* Cocoa.framework in Frameworks */,
+				BF7DAB1F18E4ED2800E52C43 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF7DAAF318E4ED2800E52C43 = {
+			isa = PBXGroup;
+			children = (
+				BF7DAB0518E4ED2800E52C43 /* Fake320 */,
+				BF7DAB2318E4ED2800E52C43 /* Fake320Tests */,
+				BF7DAAFE18E4ED2800E52C43 /* Frameworks */,
+				BF7DAAFD18E4ED2800E52C43 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF7DAAFD18E4ED2800E52C43 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF7DAAFC18E4ED2800E52C43 /* Fake320.app */,
+				BF7DAB1D18E4ED2800E52C43 /* Fake320Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BF7DAAFE18E4ED2800E52C43 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF7DAAFF18E4ED2800E52C43 /* Cocoa.framework */,
+				BF7DAB1E18E4ED2800E52C43 /* XCTest.framework */,
+				BF7DAB0118E4ED2800E52C43 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BF7DAB0118E4ED2800E52C43 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF7DAB0218E4ED2800E52C43 /* AppKit.framework */,
+				BF7DAB0318E4ED2800E52C43 /* CoreData.framework */,
+				BF7DAB0418E4ED2800E52C43 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		BF7DAB0518E4ED2800E52C43 /* Fake320 */ = {
+			isa = PBXGroup;
+			children = (
+				BF7DAB1118E4ED2800E52C43 /* AppDelegate.h */,
+				BF7DAB1218E4ED2800E52C43 /* AppDelegate.m */,
+				BF7DAB1418E4ED2800E52C43 /* MainMenu.xib */,
+				BF7DAB1718E4ED2800E52C43 /* Images.xcassets */,
+				BF7DAB0618E4ED2800E52C43 /* Supporting Files */,
+			);
+			path = Fake320;
+			sourceTree = "<group>";
+		};
+		BF7DAB0618E4ED2800E52C43 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BF7DAB0718E4ED2800E52C43 /* Fake320-Info.plist */,
+				BF7DAB0818E4ED2800E52C43 /* InfoPlist.strings */,
+				BF7DAB0B18E4ED2800E52C43 /* main.m */,
+				BF7DAB0D18E4ED2800E52C43 /* Fake320-Prefix.pch */,
+				BF7DAB0E18E4ED2800E52C43 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BF7DAB2318E4ED2800E52C43 /* Fake320Tests */ = {
+			isa = PBXGroup;
+			children = (
+				BF7DAB2918E4ED2800E52C43 /* Fake320Tests.m */,
+				BF7DAB2418E4ED2800E52C43 /* Supporting Files */,
+			);
+			path = Fake320Tests;
+			sourceTree = "<group>";
+		};
+		BF7DAB2418E4ED2800E52C43 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BF7DAB2518E4ED2800E52C43 /* Fake320Tests-Info.plist */,
+				BF7DAB2618E4ED2800E52C43 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BF7DAAFB18E4ED2800E52C43 /* Fake320 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF7DAB2D18E4ED2800E52C43 /* Build configuration list for PBXNativeTarget "Fake320" */;
+			buildPhases = (
+				BF7DAAF818E4ED2800E52C43 /* Sources */,
+				BF7DAAF918E4ED2800E52C43 /* Frameworks */,
+				BF7DAAFA18E4ED2800E52C43 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Fake320;
+			productName = Fake320;
+			productReference = BF7DAAFC18E4ED2800E52C43 /* Fake320.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BF7DAB1C18E4ED2800E52C43 /* Fake320Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF7DAB3018E4ED2800E52C43 /* Build configuration list for PBXNativeTarget "Fake320Tests" */;
+			buildPhases = (
+				BF7DAB1918E4ED2800E52C43 /* Sources */,
+				BF7DAB1A18E4ED2800E52C43 /* Frameworks */,
+				BF7DAB1B18E4ED2800E52C43 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF7DAB2218E4ED2800E52C43 /* PBXTargetDependency */,
+			);
+			name = Fake320Tests;
+			productName = Fake320Tests;
+			productReference = BF7DAB1D18E4ED2800E52C43 /* Fake320Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF7DAAF418E4ED2800E52C43 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Vincent Timofti";
+				TargetAttributes = {
+					BF7DAB1C18E4ED2800E52C43 = {
+						TestTargetID = BF7DAAFB18E4ED2800E52C43;
+					};
+				};
+			};
+			buildConfigurationList = BF7DAAF718E4ED2800E52C43 /* Build configuration list for PBXProject "Fake320" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BF7DAAF318E4ED2800E52C43;
+			productRefGroup = BF7DAAFD18E4ED2800E52C43 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF7DAAFB18E4ED2800E52C43 /* Fake320 */,
+				BF7DAB1C18E4ED2800E52C43 /* Fake320Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BF7DAAFA18E4ED2800E52C43 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7DAB0A18E4ED2800E52C43 /* InfoPlist.strings in Resources */,
+				BF7DAB1818E4ED2800E52C43 /* Images.xcassets in Resources */,
+				BF7DAB1018E4ED2800E52C43 /* Credits.rtf in Resources */,
+				BF7DAB1618E4ED2800E52C43 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF7DAB1B18E4ED2800E52C43 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7DAB2818E4ED2800E52C43 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BF7DAAF818E4ED2800E52C43 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7DAB1318E4ED2800E52C43 /* AppDelegate.m in Sources */,
+				BF7DAB0C18E4ED2800E52C43 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF7DAB1918E4ED2800E52C43 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7DAB2A18E4ED2800E52C43 /* Fake320Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BF7DAB2218E4ED2800E52C43 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF7DAAFB18E4ED2800E52C43 /* Fake320 */;
+			targetProxy = BF7DAB2118E4ED2800E52C43 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BF7DAB0818E4ED2800E52C43 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF7DAB0918E4ED2800E52C43 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BF7DAB0E18E4ED2800E52C43 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF7DAB0F18E4ED2800E52C43 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		BF7DAB1418E4ED2800E52C43 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF7DAB1518E4ED2800E52C43 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		BF7DAB2618E4ED2800E52C43 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF7DAB2718E4ED2800E52C43 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BF7DAB2B18E4ED2800E52C43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BF7DAB2C18E4ED2800E52C43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BF7DAB2E18E4ED2800E52C43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Fake320/Fake320-Prefix.pch";
+				INFOPLIST_FILE = "Fake320/Fake320-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BF7DAB2F18E4ED2800E52C43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Fake320/Fake320-Prefix.pch";
+				INFOPLIST_FILE = "Fake320/Fake320-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		BF7DAB3118E4ED2800E52C43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Fake320.app/Contents/MacOS/Fake320";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Fake320/Fake320-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Fake320Tests/Fake320Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		BF7DAB3218E4ED2800E52C43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Fake320.app/Contents/MacOS/Fake320";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Fake320/Fake320-Prefix.pch";
+				INFOPLIST_FILE = "Fake320Tests/Fake320Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF7DAAF718E4ED2800E52C43 /* Build configuration list for PBXProject "Fake320" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF7DAB2B18E4ED2800E52C43 /* Debug */,
+				BF7DAB2C18E4ED2800E52C43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF7DAB2D18E4ED2800E52C43 /* Build configuration list for PBXNativeTarget "Fake320" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF7DAB2E18E4ED2800E52C43 /* Debug */,
+				BF7DAB2F18E4ED2800E52C43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		BF7DAB3018E4ED2800E52C43 /* Build configuration list for PBXNativeTarget "Fake320Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF7DAB3118E4ED2800E52C43 /* Debug */,
+				BF7DAB3218E4ED2800E52C43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF7DAAF418E4ED2800E52C43 /* Project object */;
+}
