@@ -22,8 +22,8 @@ public:
     bool analyzeMp3(int);
     
 private:
-    bool recursive;
     std::string folder;
+    bool recursive;
     std::list<std::string> list;
     std::vector<Mp3File*> mp3List;
     

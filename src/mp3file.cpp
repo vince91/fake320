@@ -7,7 +7,7 @@
 //
 
 #include "mp3file.h"
-#include <cstdint>
+#include <stdint.h>
 #include <cmath>
 #include <fstream>
 
