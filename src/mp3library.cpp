@@ -23,6 +23,8 @@ void Mp3Library::fillList()
     AVFormatContext *formatContext = NULL; AVCodecContext *codecContext = NULL;
     bool keep;
     
+    std::cout << "Opening folder : " << folder << std::endl;
+    
     seekMp3(folder, recursive);
     
     av_register_all();
@@ -35,7 +37,7 @@ void Mp3Library::fillList()
         
         //std::cout << *it << std::endl;
         
-        /* open input file, and allocate format context */
+                /* open input file, and allocate format context */
         if (avformat_open_input(&formatContext, it->c_str(), NULL, NULL) < 0) {
             std::cerr << "Could not open source file (" << it->c_str() << ")\n";
         }
@@ -55,8 +57,8 @@ void Mp3Library::fillList()
         }
         
         if(keep == false) {
-            //std::cout << "___erase:" << *it << " " << codecContext->bit_rate << "-" <<codecContext->codec_id << std::endl;
-            list.erase(it);
+            std::cout << "___erase:" << *it << " " << codecContext->bit_rate << "-" <<codecContext->codec_id << std::endl;
+            it = list.erase(it);
         }
     }
     
@@ -126,5 +128,14 @@ bool Mp3Library::analyzeMp3(int i)
     mp3->coutInformations();
     
     return true;
+}
+
+std::string Mp3Library::getFilename(int i)
+{
+    if (i < mp3List.size()) {
+        return mp3List[i]->getFilename();
+    }
+    
+    return NULL;
 }
 

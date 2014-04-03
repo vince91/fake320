@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += ../../src/main.cpp\
         ../../src/mainwindow.cpp\
         ../../src/mp3file.cpp\
-        ../../src/mp3library.cpp
+        ../../src/mp3library.cpp\
+        ../../src/itemmodel.cpp
 
 HEADERS  += ../../src/mainwindow.h\
             ../../src/mp3file.h\
-            ../../src/mp3library.h
+            ../../src/mp3library.h\
+            ../../src/itemmodel.h
             
 
 INCLUDEPATH += /usr/local/include

@@ -20,6 +20,8 @@ public:
     Mp3Library(std::string _folder, bool _recursive) : folder(_folder), recursive(_recursive) {}
     void fillList();
     bool analyzeMp3(int);
+    int getListSize() { return mp3List.size(); }
+    std::string getFilename(int);
     
 private:
     std::string folder;

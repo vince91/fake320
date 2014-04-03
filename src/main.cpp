@@ -23,12 +23,13 @@ int main(int argc, char * argv[])
     mp3.decodeAndAnalyze();
      //*/
 
-    //*/
-    //Mp3Library library("/Users/vincent/Music/MARS", false);
+    /*/
+    Mp3Library library("/Users/vincent/Music/MARS", false);
     
-    Mp3Library library("/Users/vincent/Music/MARS/Will and Ink - Wilson [VINYL]", false);
+    //Mp3Library library("/Users/vincent/Music/MARS/Will and Ink - Wilson [VINYL]", false);
     library.fillList();
-    library.analyzeMp3(0);//*/
+    //library.analyzeMp3(0);
+     //*/
 
     QApplication a(argc, argv);
     MainWindow w;
