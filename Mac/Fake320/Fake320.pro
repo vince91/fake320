@@ -11,18 +11,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Fake320
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -std=c++11 -stdlib=libc++ -pthread
+CONFIG += c++11
+
 
 SOURCES += ../../src/main.cpp\
         ../../src/mainwindow.cpp\
         ../../src/mp3file.cpp\
-        ../../src/mp3library.cpp\
-        ../../src/itemmodel.cpp
+        ../../src/mp3library.cpp
 
 HEADERS  += ../../src/mainwindow.h\
             ../../src/mp3file.h\
-            ../../src/mp3library.h\
-            ../../src/itemmodel.h
-            
+            ../../src/mp3library.h
 
 INCLUDEPATH += /usr/local/include
 

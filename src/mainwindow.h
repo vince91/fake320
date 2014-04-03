@@ -6,7 +6,8 @@
 #include <QCheckBox>
 #include <QTreeView>
 #include "mp3library.h"
-#include "itemmodel.h"
+#include <thread>
+#include <QStandardItemModel>
 
 class MainWindow : public QMainWindow
 {
@@ -15,24 +16,30 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void analysisThread();
+
     
 private slots:
     void openFolder();
     void checkRecursive(int);
+    void analysis();
 
 private:
     QPushButton *openButton;
-    QPushButton *analyzeButton;
+    QPushButton *analysisButton;
     QCheckBox *recursiveBox;
     QTreeView *treeView;
-    ItemModel *model;
+    QStandardItemModel *model2;
     
+    int analysesCount = 0;
     
     Mp3Library * library;
-    bool recursive;
     
+    std::thread *th;
+    
+    bool recursive = false;
+    bool analyzing = false;
 
-    
 };
 
 

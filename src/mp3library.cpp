@@ -139,3 +139,20 @@ std::string Mp3Library::getFilename(int i)
     return NULL;
 }
 
+int Mp3Library::getCutOffFrequency(int i)
+{
+    if (i < mp3List.size()) {
+        return mp3List[i]->getCutOffFrequency();
+    }
+    
+    return -1;
+}
+
+double Mp3Library::getRate(int i)
+{
+    if (i < mp3List.size()) {
+        return mp3List[i]->getRate();
+    }
+    
+    return -1;
+}

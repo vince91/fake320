@@ -25,12 +25,14 @@ extern "C"
 }
 
 class Mp3File
-{
+{    
 public:
     Mp3File(std::string);
     ~Mp3File();
     
     std::string getFilename() const { return filename; }
+    int getCutOffFrequency() const { return cutOffFrequency; }
+    double getRate() const { return rate; }
     bool decodeAndAnalyze();
     void coutInformations() const;
     
