@@ -11,8 +11,10 @@
 #include <cmath>
 #include <fstream>
 
-#define BAND_INTERVAL 23
-#define BAND_START_INDEX 674
+#define BAND_INTERVAL 185
+#define BAND_START_INDEX 5388
+#define DIFF_THRESHOLD -4
+#define MEAN_THRESHOLD -100
 
 extern "C"
 {
@@ -91,7 +93,7 @@ bool Mp3File::decodeAndAnalyze()
     }
 
     cutOffFrequency = (maxIndex + 1)*500 + 14500;
-    rate = 100.*maxValue/fftCount;
+    rate = 100.*maxValue/(fftCount);
     
     //std::cout << std::endl << "Max:" << maxIndex << "(" << ((maxIndex+1)*500+14500) << ") :" << maxValue << "(" << 100.*maxValue/fftCount << "%)" << std::endl;
     
@@ -211,7 +213,6 @@ bool Mp3File::fftAnalysis()
     }
     
     double minValue = fftMeansDiff[0]; int minIndex = 0;
-    
     for (int i = 1; i < FFTMEANS_SIZE - 1; ++i) {
         if (fftMeansDiff[i] < minValue) {
             minValue = fftMeansDiff[i];
@@ -219,19 +220,18 @@ bool Mp3File::fftAnalysis()
         }
     }
     
-    if (minValue < -6) {
-        /*
+    if (minValue < DIFF_THRESHOLD) {
+        
         bool valid = true;
-        for (int i = minIndex; i < FFTMEANS_SIZE && valid == true; ++i) {
-            if (fftMeans[i] > -70)
+        for (int i = minIndex + 1; i < FFTMEANS_SIZE && valid == true; ++i) {
+            if (fftMeans[i] > MEAN_THRESHOLD)
                 valid = false;
         }
         
-        if (valid)*/
+        if (valid)
             ++counter[minIndex];
-        
     }
-    
+        
 
     return true;
 }
@@ -239,4 +239,16 @@ bool Mp3File::fftAnalysis()
 void Mp3File::coutInformations() const
 {
     std::cout << getFilename() << std::endl << "=> Cut-off frequency: " << cutOffFrequency << ", rate: " << rate << "% (frames: " << frameCount << ", FFTs:" << fftCount << ")\n";
+    
+    for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
+        std::cout << counter[i] << "," ;
+    }
+    
+    std::cout << std::endl;
+    
+    for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
+        std::cout << counter2[i] << "," ;
+    }
+    
+    std::cout << std::endl;
 }

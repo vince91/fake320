@@ -13,8 +13,8 @@
 #include <fstream>
 
 #define SHORT_MAX 32768.
-#define FFT_NBITS 11
-#define FFT_SIZE 2048
+#define FFT_NBITS 14
+#define FFT_SIZE 16384
 #define FFTMEANS_SIZE 12
 #define FFT_CORRECTION 4./(FFT_SIZE*FFT_SIZE)
 
@@ -44,7 +44,7 @@ private:
     double fftMagnitude[FFT_SIZE/2 + 1];
     
     int index = 0, currentArray = 0, frameCount = 0, fftCount = 0;
-    double fftMeans[FFTMEANS_SIZE], fftMeansDiff[FFTMEANS_SIZE - 1], counter[FFTMEANS_SIZE - 1] = {0};
+    double fftMeans[FFTMEANS_SIZE], fftMeansDiff[FFTMEANS_SIZE - 1], counter[FFTMEANS_SIZE - 1] = {0}, counter2[FFTMEANS_SIZE - 1] = {0};
     
     AVFormatContext *formatContext = NULL;
     AVCodecContext *codecContext = NULL;

@@ -20,9 +20,10 @@ using namespace std;
 int main(int argc, char * argv[])
 {
     /*/
-    Mp3File mp3("/Users/vincent/Documents/MATLAB/freq/mano.mp3");
+    Mp3File mp3("/Users/vincent/Documents/MATLAB/freq/music/binny.mp3");
     
     mp3.decodeAndAnalyze();
+    mp3.coutInformations();
      //*/
 
     /*/
@@ -33,11 +34,14 @@ int main(int argc, char * argv[])
     //library.analyzeMp3(0);
      //*/
     
+    //*/
 
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
+     //
         
     return a.exec();
+     //*/
 }
 

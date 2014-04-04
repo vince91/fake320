@@ -114,7 +114,7 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
 
 bool Mp3Library::analyzeMp3(int i)
 {
-    if (i >= mp3List.size()) {
+    if (i >= (int)mp3List.size()) {
         std::cerr << "i exceeds list size\n";
         return false;
     }
@@ -132,7 +132,7 @@ bool Mp3Library::analyzeMp3(int i)
 
 std::string Mp3Library::getFilename(int i)
 {
-    if (i < mp3List.size()) {
+    if (i < (int)mp3List.size()) {
         return mp3List[i]->getFilename();
     }
     
@@ -141,7 +141,7 @@ std::string Mp3Library::getFilename(int i)
 
 int Mp3Library::getCutOffFrequency(int i)
 {
-    if (i < mp3List.size()) {
+    if (i < (int)mp3List.size()) {
         return mp3List[i]->getCutOffFrequency();
     }
     
@@ -150,7 +150,7 @@ int Mp3Library::getCutOffFrequency(int i)
 
 double Mp3Library::getRate(int i)
 {
-    if (i < mp3List.size()) {
+    if (i < (int)mp3List.size()) {
         return mp3List[i]->getRate();
     }
     
