@@ -7,6 +7,8 @@
 #include <QString>
 #include <QFileDialog>
 #include <QHeaderView>
+#include <QLabel>
+#include <QColor>
 #include <thread>
 #include <functional>
 
@@ -26,14 +28,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     grid->addWidget(openButton, 0, 0);
     grid->addWidget(recursiveBox, 1, 0);
     grid->addWidget(analysisButton, 0, 1, 1, 1);
-    grid->addWidget(treeView, 2, 0, 2, 2);
+    grid->addWidget(treeView, 2, 0, 1, 2);
     
-    model2 = new QStandardItemModel(0, 4);
-    model2->setHorizontalHeaderItem(1, new QStandardItem("Filename"));
-    model2->setHorizontalHeaderItem(2, new QStandardItem("Cut-off frequency"));
-    model2->setHorizontalHeaderItem(3, new QStandardItem("Rate"));
+    model = new QStandardItemModel(0, 4);
+    model->setHorizontalHeaderItem(1, new QStandardItem("Filename"));
+    model->setHorizontalHeaderItem(2, new QStandardItem("Cut-off frequency"));
+    model->setHorizontalHeaderItem(3, new QStandardItem("Rate"));
     
-    treeView->setModel(model2);
+    treeView->setModel(model);
     treeView->header()->setStretchLastSection(false);
     treeView->header()->setSectionResizeMode(1, QHeaderView::Stretch);
     treeView->hideColumn(0);
@@ -44,6 +46,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(openButton, SIGNAL(clicked()), this, SLOT(openFolder()));
     connect(recursiveBox, SIGNAL(stateChanged(int)), this, SLOT(checkRecursive(int)));
     connect(analysisButton, SIGNAL(clicked()), this, SLOT(analysis()));
+    //connect(this, SIGNAL(closedEvent()), this, SLOT(closeThread()));
+    
+    
     
     QDesktopWidget dw;
     resize(0.7*dw.width(), 0.5*dw.height());
@@ -55,6 +60,8 @@ MainWindow::~MainWindow()
         if (th->joinable())
             th->join();
     }
+    
+    analyzing = false;
 }
 
 void MainWindow::openFolder()
@@ -63,6 +70,7 @@ void MainWindow::openFolder()
     
     if (!dirname.isNull())
     {
+        model->removeRows(0, model->rowCount());
         library = new Mp3Library(dirname.toStdString(), recursive);
         library->fillList();
         
@@ -77,7 +85,7 @@ void MainWindow::openFolder()
                 (*it)->setFlags((*it)->flags() & ~Qt::ItemIsEditable);
             }
             
-            model2->appendRow(list);
+            model->appendRow(list);
 
         }
         
@@ -117,14 +125,33 @@ void MainWindow::analysisThread()
     {
         library->analyzeMp3(analysesCount);
         
-        QList<QStandardItem*> list = model2->takeRow(analysesCount);
-        list.removeLast(); list.removeLast();
-        list.append(new QStandardItem(QString::number(library->getCutOffFrequency(analysesCount))));
-        list.append(new QStandardItem(QString::number(library->getRate(analysesCount))));
-        model2->insertRow(analysesCount, list);
+        int cutOffFrequency = library->getCutOffFrequency(analysesCount);
+        double rate = library->getRate(analysesCount);
         
-        //model->updateItem(analysesCount, library->getCutOffFrequency(analysesCount), library->getRate(analysesCount));
-        //treeView->update();
+        QColor color("green");
+        
+        if (cutOffFrequency < 18000) {
+            if (rate < 8)
+                color = QColor("orange");
+            else
+                color = QColor("red");
+        }
+        
+        QString freq = QString::number(cutOffFrequency);
+        if (cutOffFrequency == 20000)
+            freq  += "+";
+            
+        QList<QStandardItem*> list = model->takeRow(analysesCount);
+        list.removeLast(); list.removeLast();
+        list.append(new QStandardItem(freq));
+        list.append(new QStandardItem(QString::number(rate)));
+        
+        for (QList<QStandardItem*>::iterator it = list.begin(); it != list.end(); ++it) {
+            (*it)->setBackground(QBrush(color));
+        }
+        
+        model->insertRow(analysesCount, list);
+        
         
         if (++analysesCount == library->getListSize()) {
             analysisButton->setEnabled(false);
@@ -138,4 +165,9 @@ void MainWindow::analysisThread()
 
     
     return;
+}
+
+void MainWindow::closeThread()
+{
+    analyzing = false;
 }

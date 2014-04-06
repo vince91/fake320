@@ -23,13 +23,14 @@ private slots:
     void openFolder();
     void checkRecursive(int);
     void analysis();
+    void closeThread();
 
 private:
     QPushButton *openButton;
     QPushButton *analysisButton;
     QCheckBox *recursiveBox;
     QTreeView *treeView;
-    QStandardItemModel *model2;
+    QStandardItemModel *model;
     
     int analysesCount = 0;
     
