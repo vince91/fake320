@@ -12,6 +12,10 @@
 #include <errno.h>
 #include <vector>
 
+#if defined(__MINGW32__) || defined(__MINGW64__)
+#include <windows.h>
+#endif
+
 extern "C"
 {
 #include <libavformat/avformat.h>
@@ -23,13 +27,13 @@ void Mp3Library::fillList()
     AVFormatContext *formatContext = NULL; AVCodecContext *codecContext = NULL;
     bool keep;
     
-    std::cout << "Opening folder : " << folder << std::endl;
-    
+    std::cout << "Opening folder: " << folder << std::endl;
+
     seekMp3(folder, recursive);
     
     av_register_all();
     
-    std::cout << list.size() << " files in the list before cleaning\n\n";
+    std::cout << list.size() << " files in the list before cleaning\n";
     
     for (std::list<std::string>::iterator it = list.begin(); it != list.end(); ++it) {
         formatContext = NULL;
@@ -57,7 +61,7 @@ void Mp3Library::fillList()
         }
         
         if(keep == false) {
-            std::cout << "___erase:" << *it << " " << codecContext->bit_rate << "-" <<codecContext->codec_id << std::endl;
+            //std::cout << "___erase:" << *it << " " << codecContext->bit_rate << "-" <<codecContext->codec_id << std::endl;
             it = list.erase(it);
         }
     }
@@ -76,6 +80,36 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
     std::vector<std::string> folderList;
     
 #if defined(__MINGW32__) || defined(__MINGW64__)
+
+    WIN32_FIND_DATA findData;
+    HANDLE handle;
+    std::string folderTemp;
+
+    folderTemp = _folder + "/*";
+    handle = FindFirstFile(folderTemp.c_str(), &findData);
+
+    if (handle == INVALID_HANDLE_VALUE) {
+        std::cout << "FindFirstFile failed: " << GetLastError() << std::endl;
+        return false;
+    }
+
+    do {
+        if (strcmp(findData.cFileName, ".")  != 0 && strcmp(findData.cFileName, "..") != 0) {
+
+            file = _folder + "/" + std::string(findData.cFileName);
+
+            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                folderList.push_back(file);
+            else if (file.substr(file.size()-4, file.size()-1).compare(".mp3") == 0)
+                list.push_back(file);
+
+        }
+
+
+    }
+    while(handle != INVALID_HANDLE_VALUE && FindNextFile(handle, &findData) == TRUE);
+
+       FindClose(handle);
     
 #else
     DIR *d = NULL;
@@ -134,8 +168,7 @@ std::string Mp3Library::getFilename(int i)
 {
     if (i < (int)mp3List.size()) {
         return mp3List[i]->getFilename();
-    }
-    
+    }   
     return NULL;
 }
 
@@ -143,8 +176,7 @@ int Mp3Library::getCutOffFrequency(int i)
 {
     if (i < (int)mp3List.size()) {
         return mp3List[i]->getCutOffFrequency();
-    }
-    
+    }  
     return -1;
 }
 
@@ -152,7 +184,6 @@ double Mp3Library::getRate(int i)
 {
     if (i < (int)mp3List.size()) {
         return mp3List[i]->getRate();
-    }
-    
+    }  
     return -1;
 }

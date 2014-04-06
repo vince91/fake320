@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Vincent Timofti. All rights reserved.
 //
 
-#include "mainwindow.h"
-#include <QApplication>
+//#include "mainwindow.h"
+//#include <QApplication>
 
 #include <iostream>
 #include <thread>
@@ -20,21 +20,21 @@ using namespace std;
 int main(int argc, char * argv[])
 {
     /*/
-    Mp3File mp3("/Users/vincent/Documents/MATLAB/freq/music/binny.mp3");
+    Mp3File mp3("e:/Desktop/MARS/ok.mp3");
     
     mp3.decodeAndAnalyze();
     mp3.coutInformations();
      //*/
 
-    /*/
-    Mp3Library library("/Users/vincent/Music/MARS", false);
+    //*/
+    Mp3Library library("e:/Desktop/MARS", false);
     
     //Mp3Library library("/Users/vincent/Music/MARS/Will and Ink - Wilson [VINYL]", false);
     library.fillList();
     //library.analyzeMp3(0);
      //*/
     
-    //*/
+    /*/
 
     QApplication a(argc, argv);
     MainWindow w;

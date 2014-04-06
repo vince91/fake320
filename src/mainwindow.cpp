@@ -14,7 +14,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    setWindowTitle("Fake320");
+    setWindowTitle("fake320");
     
     QWidget *window = new QWidget;
     QGridLayout *grid = new QGridLayout;
@@ -68,11 +68,18 @@ void MainWindow::openFolder()
 {
     QString dirname = QFileDialog::getExistingDirectory(this, tr("Select a directory"), QDir::currentPath());
     
+
     if (!dirname.isNull())
     {
+
+
         model->removeRows(0, model->rowCount());
+
+
         library = new Mp3Library(dirname.toStdString(), recursive);
+
         library->fillList();
+
         
         for (int i = 0; i < library->getListSize(); ++i) {
             std::string s = library->getFilename(i);
@@ -103,13 +110,13 @@ void MainWindow::checkRecursive(int check)
 void MainWindow::analysis()
 {
     if (!analyzing) {
-        analysisButton->setText("Stop analysis");
+        analysisButton->setText("Stop MP3 analysis");
         analyzing = true;
         th = new std::thread(&MainWindow::analysisThread, this);
     }
     else {
         analysisButton->setEnabled(false);
-        analysisButton->setText("Resume analysis");
+        analysisButton->setText("Resume MP3 analysis");
         analyzing = false;
     }
     
