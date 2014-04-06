@@ -75,7 +75,7 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
     std::string file;
     std::vector<std::string> folderList;
     
-#ifdef WIN32
+#if defined(__MINGW32__) || defined(__MINGW64__)
     
 #else
     DIR *d = NULL;
@@ -101,7 +101,7 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
     }
     
     closedir(d);
-#endif //#ifdef WIN32
+#endif //#ifdef MINGW
     
     if (recursive) {
         for (std::vector<std::string>::iterator it = folderList.begin(); it != folderList.end(); ++it) {
