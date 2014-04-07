@@ -10,7 +10,6 @@
 #include "mp3file.h"
 #include <dirent.h>
 #include <errno.h>
-#include <vector>
 
 #if defined(__MINGW32__) || defined(__MINGW64__)
 #include <windows.h>

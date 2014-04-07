@@ -5,9 +5,9 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QTreeView>
-#include "mp3library.h"
-#include <thread>
 #include <QStandardItemModel>
+#include <thread>
+#include "mp3library.h"
 
 class MainWindow : public QMainWindow
 {

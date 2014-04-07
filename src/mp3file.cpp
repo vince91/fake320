@@ -7,9 +7,7 @@
 //
 
 #include "mp3file.h"
-#include <stdint.h>
 #include <cmath>
-#include <fstream>
 
 #define BAND_INTERVAL 185
 #define BAND_START_INDEX 5388

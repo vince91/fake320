@@ -10,7 +10,6 @@
 #define MP3FILE_H
 
 #include <iostream>
-#include <fstream>
 
 #define SHORT_MAX 32768.
 #define FFT_NBITS 14
