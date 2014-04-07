@@ -9,8 +9,8 @@
 #include <QHeaderView>
 #include <QLabel>
 #include <QColor>
+#include <QCloseEvent>
 #include <thread>
-#include <functional>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -38,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     treeView->setModel(model);
     treeView->header()->setStretchLastSection(false);
     treeView->header()->setSectionResizeMode(1, QHeaderView::Stretch);
+    treeView->setColumnWidth(2, 150);
+    treeView->setSortingEnabled(true);
     treeView->hideColumn(0);
     
     window->setLayout(grid);
@@ -46,12 +48,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(openButton, SIGNAL(clicked()), this, SLOT(openFolder()));
     connect(recursiveBox, SIGNAL(stateChanged(int)), this, SLOT(checkRecursive(int)));
     connect(analysisButton, SIGNAL(clicked()), this, SLOT(analysis()));
-    //connect(this, SIGNAL(closedEvent()), this, SLOT(closeThread()));
-    
-    
     
     QDesktopWidget dw;
-    resize(0.7*dw.width(), 0.5*dw.height());
+    resize(0.5*dw.width(), 0.5*dw.height());
 }
 
 MainWindow::~MainWindow()
@@ -60,47 +59,39 @@ MainWindow::~MainWindow()
         if (th->joinable())
             th->join();
     }
-    
-    analyzing = false;
+    closeThread();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    closeThread();
+    event->accept();
 }
 
 void MainWindow::openFolder()
 {
     QString dirname = QFileDialog::getExistingDirectory(this, tr("Select a directory"), QDir::currentPath());
     
-
     if (!dirname.isNull())
     {
-
-
         model->removeRows(0, model->rowCount());
-
-
+        
         library = new Mp3Library(dirname.toStdString(), recursive);
-
         library->fillList();
-
         
         for (int i = 0; i < library->getListSize(); ++i) {
             std::string s = library->getFilename(i);
-            //model->addItem(i, s.substr(s.find_last_of("/") + 1, s.size() - 1));
+            
             QList<QStandardItem *> list;
-            list.append(new QStandardItem(i));
+            list.append(new QStandardItem(QString::number(i)));
             list.append(new QStandardItem(s.substr(s.find_last_of("/") + 1, s.size() - 1).c_str()));
             
-            for (QList<QStandardItem *>::iterator it = list.begin(); it != list.end(); ++it) {
-                (*it)->setFlags((*it)->flags() & ~Qt::ItemIsEditable);
-            }
-            
             model->appendRow(list);
-
         }
         
         if (library->getListSize() > 0)
             analysisButton->setEnabled(true);
-        
     }
-    
 }
 
 void MainWindow::checkRecursive(int check)
@@ -120,9 +111,6 @@ void MainWindow::analysis()
         analysisButton->setText("Resume MP3 analysis");
         analyzing = false;
     }
-    
-    
-    
 }
 
 void MainWindow::analysisThread()
@@ -148,8 +136,19 @@ void MainWindow::analysisThread()
         QString freq = QString::number(cutOffFrequency);
         if (cutOffFrequency == 20000)
             freq  += "+";
-            
-        QList<QStandardItem*> list = model->takeRow(analysesCount);
+        
+        QStandardItem *item;
+        int realRow = -1;
+        
+        /* seek the real index, if user sorted the columns */
+        for (int i = 0; i < model->rowCount() && realRow == -1; ++i) {
+            item = model->item(i, 0);
+            int temp = item->data(Qt::DisplayRole).toInt();
+            if (temp == analysesCount)
+                realRow = i;
+        }
+        
+        QList<QStandardItem*> list = model->takeRow(realRow);
         list.removeLast(); list.removeLast();
         list.append(new QStandardItem(freq));
         list.append(new QStandardItem(QString::number(rate)));
@@ -158,19 +157,17 @@ void MainWindow::analysisThread()
             (*it)->setBackground(QBrush(color));
         }
         
-        model->insertRow(analysesCount, list);
-        
+        model->insertRow(realRow, list);
         
         if (++analysesCount == library->getListSize()) {
             analysisButton->setEnabled(false);
             analysisButton->setText("Start MP3 analysis");
-            analyzing = false;
+            closeThread();
         }
     }
     
     if (analysesCount != library->getListSize())
         analysisButton->setEnabled(true);
-
     
     return;
 }

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Vincent Timofti. All rights reserved.
 //
 
-#ifndef __Fake320__mp3library__
-#define __Fake320__mp3library__
+#ifndef MP3LIBRARY_H
+#define MP3LIBRARY_H
 
 #include <iostream>
 #include <list>
@@ -37,4 +37,4 @@ private:
     bool seekMp3(std::string, bool);
 };
 
-#endif /* defined(__Fake320__mp3library__) */
+#endif // MP3LIBRARY_H

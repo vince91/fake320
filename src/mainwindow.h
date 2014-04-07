@@ -17,15 +17,16 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void analysisThread();
-
     
 private slots:
     void openFolder();
     void checkRecursive(int);
     void analysis();
-    void closeThread();
 
 private:
+    void closeEvent(QCloseEvent *);
+    void closeThread();
+    
     QPushButton *openButton;
     QPushButton *analysisButton;
     QCheckBox *recursiveBox;

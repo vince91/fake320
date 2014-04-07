@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Vincent Timofti. All rights reserved.
 //
 
-#ifndef __Fake320__mp3file__
-#define __Fake320__mp3file__
+#ifndef MP3FILE_H
+#define MP3FILE_H
 
 #include <iostream>
 #include <fstream>
@@ -59,4 +59,4 @@ private:
     int decodePacket();
 };
 
-#endif /* defined(__Fake320__mp3file__) */
+#endif // MP3FILE_H
