@@ -87,10 +87,15 @@ void MainWindow::openFolder()
         
         for (int i = 0; i < library->getListSize(); ++i) {
             std::string s = library->getFilename(i);
-            
+            s = s.substr(s.find_last_of("/") + 1, s.size() - 1);
+
+
+
+
+
             QList<QStandardItem *> list;
             list.append(new QStandardItem(QString::number(i)));
-            list.append(new QStandardItem(s.substr(s.find_last_of("/") + 1, s.size() - 1).c_str()));
+            list.append(new QStandardItem(s.c_str()));
 
             for (QList<QStandardItem *>::iterator it = list.begin(); it != list.end(); ++it) {
                 (*it)->setFlags((*it)->flags() & ~Qt::ItemIsEditable);
