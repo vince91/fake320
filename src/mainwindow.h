@@ -37,7 +37,7 @@ private:
     
     Mp3Library * library;
     
-    std::thread *th;
+    std::thread *th = nullptr;
     
     bool recursive = false;
     bool analyzing = false;
