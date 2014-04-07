@@ -18,21 +18,23 @@ class Mp3Library
 {    
 public:
     Mp3Library(std::string _folder, bool _recursive) : folder(_folder), recursive(_recursive) {}
+    
     void fillList();
     bool analyzeMp3(int);
-    int getListSize() { return (int) mp3List.size(); }
-    std::string getFilename(int);
-    int getCutOffFrequency(int);
-    double getRate(int);
+    
+    int getListSize() const { return (int) mp3List.size(); }
+    std::string getFilename(int) const;
+    int getCutOffFrequency(int) const;
+    double getRate(int) const;
     
 private:
     std::string folder;
     bool recursive;
+    
     std::list<std::string> list;
     std::vector<Mp3File*> mp3List;
     
     bool seekMp3(std::string, bool);
-
 };
 
 #endif /* defined(__Fake320__mp3library__) */

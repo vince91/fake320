@@ -30,10 +30,10 @@ public:
     Mp3File(std::string);
     ~Mp3File();
     
+    bool decodeAndAnalyze();
     std::string getFilename() const { return filename; }
     int getCutOffFrequency() const { return cutOffFrequency; }
     double getRate() const { return rate; }
-    bool decodeAndAnalyze();
     void coutInformations() const;
     
 private:
@@ -41,18 +41,16 @@ private:
 
     double samples[2][FFT_SIZE];
     fftw_complex fftOut[FFT_SIZE/2 + 1];
-    double fftMagnitude[FFT_SIZE/2 + 1];
+    double fftMagnitude[FFT_SIZE/2 + 1], fftMeans[FFTMEANS_SIZE], fftMeansDiff[FFTMEANS_SIZE - 1], counter[FFTMEANS_SIZE - 1] = {0};
     
-    int index = 0, currentArray = 0, frameCount = 0, fftCount = 0;
-    double fftMeans[FFTMEANS_SIZE], fftMeansDiff[FFTMEANS_SIZE - 1], counter[FFTMEANS_SIZE - 1] = {0}, counter2[FFTMEANS_SIZE - 1] = {0};
+    int index = 0, currentArray = 0, frameCount = 0, fftCount = 0, streamIndex = -1, gotFrame;
     
     AVFormatContext *formatContext = NULL;
     AVCodecContext *codecContext = NULL;
     AVPacket packet;
     AVFrame *frame = NULL;
     AVStream *stream = NULL;
-    int streamIndex = -1, gotFrame;
-        
+    
     int cutOffFrequency;
     double rate;
     

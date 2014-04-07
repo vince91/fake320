@@ -75,7 +75,7 @@ void Mp3Library::fillList()
 
 bool Mp3Library::seekMp3(std::string _folder, bool recursive)
 {
-    /* adds all files contained in folder (recursively or not), whose extension is ".mp3", to list */
+    /* adds all '*.mp3' contained in folder (recursively or not) to list */
     std::string file;
     std::vector<std::string> folderList;
     
@@ -164,7 +164,7 @@ bool Mp3Library::analyzeMp3(int i)
     return true;
 }
 
-std::string Mp3Library::getFilename(int i)
+std::string Mp3Library::getFilename(int i) const
 {
     if (i < (int)mp3List.size()) {
         return mp3List[i]->getFilename();
@@ -172,7 +172,7 @@ std::string Mp3Library::getFilename(int i)
     return NULL;
 }
 
-int Mp3Library::getCutOffFrequency(int i)
+int Mp3Library::getCutOffFrequency(int i) const
 {
     if (i < (int)mp3List.size()) {
         return mp3List[i]->getCutOffFrequency();
@@ -180,7 +180,7 @@ int Mp3Library::getCutOffFrequency(int i)
     return -1;
 }
 
-double Mp3Library::getRate(int i)
+double Mp3Library::getRate(int i) const
 {
     if (i < (int)mp3List.size()) {
         return mp3List[i]->getRate();

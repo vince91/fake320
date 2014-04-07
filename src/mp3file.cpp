@@ -35,7 +35,6 @@ bool Mp3File::decodeAndAnalyze()
 {
     int lenght;
     
-    /* register all formats and codecs */
     av_register_all();
     
     /* open input file, and allocate format context */
@@ -94,8 +93,6 @@ bool Mp3File::decodeAndAnalyze()
 
     cutOffFrequency = (maxIndex + 1)*500 + 14500;
     rate = 100.*maxValue/(fftCount);
-    
-    //std::cout << std::endl << "Max:" << maxIndex << "(" << ((maxIndex+1)*500+14500) << ") :" << maxValue << "(" << 100.*maxValue/fftCount << "%)" << std::endl;
     
     avcodec_close(codecContext);
     avformat_close_input(&formatContext);
@@ -181,6 +178,7 @@ int Mp3File::decodePacket()
         }
     }
     
+    /* when enough samples were decoded, send them for fft analysis */
     if(samplesComplete)
         fftAnalysis();
     
@@ -195,6 +193,7 @@ bool Mp3File::fftAnalysis()
     fftw_plan plan = fftw_plan_dft_r2c_1d(FFT_SIZE, samples[index], fftOut, FFTW_ESTIMATE);
     fftw_execute(plan);
     
+    /* dB full scale */
     for (int i = 0; i < (FFT_SIZE/2 + 1); ++i) {
         fftMagnitude[i] = 10*log10(FFT_CORRECTION * (fftOut[i][0]*fftOut[i][0] + fftOut[i][1]*fftOut[i][1]));
     }
@@ -207,7 +206,6 @@ bool Mp3File::fftAnalysis()
         fftMeans[i] /= BAND_INTERVAL;
     }
     
-    /* differences between adjacente elements of fftMeans[] */
     for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
         fftMeansDiff[i] = fftMeans[i + 1] - fftMeans[i];
     }
@@ -231,7 +229,6 @@ bool Mp3File::fftAnalysis()
         if (valid)
             ++counter[minIndex];
     }
-        
 
     return true;
 }
@@ -239,16 +236,4 @@ bool Mp3File::fftAnalysis()
 void Mp3File::coutInformations() const
 {
     std::cout << getFilename() << std::endl << "=> Cut-off frequency: " << cutOffFrequency << ", rate: " << rate << "% (frames: " << frameCount << ", FFTs:" << fftCount << ")\n";
-    
-    for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
-        std::cout << counter[i] << "," ;
-    }
-    
-    std::cout << std::endl;
-    
-    for (int i = 0; i < FFTMEANS_SIZE - 1; ++i) {
-        std::cout << counter2[i] << "," ;
-    }
-    
-    std::cout << std::endl;
 }
