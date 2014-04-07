@@ -96,7 +96,8 @@ void MainWindow::openFolder()
 
         }
         
-        analysisButton->setEnabled(true);
+        if (library->getListSize() > 0)
+            analysisButton->setEnabled(true);
         
     }
     
@@ -135,7 +136,7 @@ void MainWindow::analysisThread()
         int cutOffFrequency = library->getCutOffFrequency(analysesCount);
         double rate = library->getRate(analysesCount);
         
-        QColor color("green");
+        QColor color("white");
         
         if (cutOffFrequency < 18000) {
             if (rate < 8)
@@ -162,7 +163,7 @@ void MainWindow::analysisThread()
         
         if (++analysesCount == library->getListSize()) {
             analysisButton->setEnabled(false);
-            analysisButton->setText("Start analysis");
+            analysisButton->setText("Start MP3 analysis");
             analyzing = false;
         }
     }

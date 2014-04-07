@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Vincent Timofti. All rights reserved.
 //
 
-//#include "mainwindow.h"
-//#include <QApplication>
+#include "mainwindow.h"
+#include <QApplication>
 
 #include <iostream>
 #include <thread>
@@ -26,7 +26,7 @@ int main(int argc, char * argv[])
     mp3.coutInformations();
      //*/
 
-    //*/
+    /*/
     Mp3Library library("e:/Desktop/MARS", false);
     
     //Mp3Library library("/Users/vincent/Music/MARS/Will and Ink - Wilson [VINYL]", false);
@@ -34,12 +34,12 @@ int main(int argc, char * argv[])
     //library.analyzeMp3(0);
      //*/
     
-    /*/
+    //*/
 
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-     //
+    
         
     return a.exec();
      //*/
