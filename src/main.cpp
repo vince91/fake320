@@ -6,11 +6,12 @@
 //  Copyright (c) 2014 Vincent Timofti. All rights reserved.
 //
 
-#include "mainwindow.h"
-#include <QApplication>
 
+#include <QApplication>
+#include <QTextCodec>
 #include <iostream>
 #include <thread>
+#include "mainwindow.h"
 #include "mp3file.h"
 #include "mp3library.h"
 
@@ -36,6 +37,7 @@ int main(int argc, char * argv[])
     //*/
 
     QApplication a(argc, argv);
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     MainWindow w;
     w.show();
     

@@ -10,6 +10,7 @@
 #include "mp3file.h"
 #include <dirent.h>
 #include <errno.h>
+#include <cstdlib>
 
 #if defined(__MINGW32__) || defined(__MINGW64__)
 #include <windows.h>
@@ -85,7 +86,10 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
     std::string folderTemp;
 
     folderTemp = _folder + "/*";
-    handle = FindFirstFile(folderTemp.c_str(), &findData);
+
+    wchar_t filename[4096] = {0};
+    MultiByteToWideChar(CP_ACP, 0, folderTemp.c_str(), folderTemp.size(), filename, folderTemp.size());
+    handle = FindFirstFile(filename, &findData);
 
     if (handle == INVALID_HANDLE_VALUE) {
         std::cout << "FindFirstFile failed: " << GetLastError() << std::endl;
@@ -93,9 +97,14 @@ bool Mp3Library::seekMp3(std::string _folder, bool recursive)
     }
 
     do {
-        if (strcmp(findData.cFileName, ".")  != 0 && strcmp(findData.cFileName, "..") != 0) {
 
-            file = _folder + "/" + std::string(findData.cFileName);
+        char mbstr[4096];
+
+        WideCharToMultiByte(CP_ACP, 0, findData.cFileName, -1, mbstr, 4096, NULL, NULL);
+
+        if (strcmp(mbstr, ".")  != 0 && strcmp(mbstr, "..") != 0) {
+
+            file = _folder + "/" + mbstr;
 
             if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
                 folderList.push_back(file);

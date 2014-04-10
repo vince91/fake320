@@ -54,12 +54,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 
 MainWindow::~MainWindow()
-{
+{    
+    closeThread();
     if (th != nullptr) {
         if (th->joinable())
             th->join();
     }
-    closeThread();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -74,6 +74,12 @@ void MainWindow::openFolder()
     
     if (!dirname.isNull())
     {
+        closeThread();
+        if (th != nullptr) {
+            if (th->joinable())
+                th->join();
+        }
+
         model->removeRows(0, model->rowCount());
         
         library = new Mp3Library(dirname.toStdString(), recursive);
@@ -81,16 +87,28 @@ void MainWindow::openFolder()
         
         for (int i = 0; i < library->getListSize(); ++i) {
             std::string s = library->getFilename(i);
-            
+            s = s.substr(s.find_last_of("/") + 1, s.size() - 1);
+
+
+
+
+
             QList<QStandardItem *> list;
             list.append(new QStandardItem(QString::number(i)));
-            list.append(new QStandardItem(s.substr(s.find_last_of("/") + 1, s.size() - 1).c_str()));
+            list.append(new QStandardItem(s.c_str()));
+
+            for (QList<QStandardItem *>::iterator it = list.begin(); it != list.end(); ++it) {
+                (*it)->setFlags((*it)->flags() & ~Qt::ItemIsEditable);
+            }
             
             model->appendRow(list);
         }
         
-        if (library->getListSize() > 0)
+        if (library->getListSize() > 0) {
+            analysesCount = 0;
+            analysisButton->setText("Start MP3 analysis");
             analysisButton->setEnabled(true);
+        }
     }
 }
 
