@@ -122,11 +122,7 @@ void MainWindow::analysis()
     if (!analyzing) {
         analysisButton->setText("Stop MP3 analysis");
         analyzing = true;
-        if (th != nullptr) {
-            if (th->joinable())
-                th->join();
-
-        }
+        
         th = new std::thread(&MainWindow::analysisThread, this);
     }
     else {
