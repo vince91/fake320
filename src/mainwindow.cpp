@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QColor>
 #include <QCloseEvent>
+#include <QStandardPaths>
 #include <thread>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
@@ -49,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(recursiveBox, SIGNAL(stateChanged(int)), this, SLOT(checkRecursive(int)));
     connect(analysisButton, SIGNAL(clicked()), this, SLOT(analysis()));
     
+    musicDirectory = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+
     QDesktopWidget dw;
     resize(0.5*dw.width(), 0.5*dw.height());
 }
@@ -70,10 +73,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::openFolder()
 {
-    QString dirname = QFileDialog::getExistingDirectory(this, tr("Select a directory"), QDir::currentPath());
+    QString dirname = QFileDialog::getExistingDirectory(this, tr("Select a directory"), musicDirectory);
     
-    if (!dirname.isNull())
-    {
+    if (!dirname.isNull()) {
+    
         closeThread();
         if (th != nullptr) {
             if (th->joinable())
@@ -82,16 +85,12 @@ void MainWindow::openFolder()
 
         model->removeRows(0, model->rowCount());
         
-        library = new Mp3Library(dirname.toStdString(), recursive);
-        library->fillList();
+        library.update(dirname, recursive);
+        library.fillList();
         
-        for (int i = 0; i < library->getListSize(); ++i) {
-            std::string s = library->getFilename(i);
+        for (int i = 0; i < library.getListSize(); ++i) {
+            std::string s = library.getFilename(i);
             s = s.substr(s.find_last_of("/") + 1, s.size() - 1);
-
-
-
-
 
             QList<QStandardItem *> list;
             list.append(new QStandardItem(QString::number(i)));
@@ -104,7 +103,7 @@ void MainWindow::openFolder()
             model->appendRow(list);
         }
         
-        if (library->getListSize() > 0) {
+        if (library.getListSize() > 0) {
             analysesCount = 0;
             analysisButton->setText("Start MP3 analysis");
             analysisButton->setEnabled(true);
@@ -114,7 +113,7 @@ void MainWindow::openFolder()
 
 void MainWindow::checkRecursive(int check)
 {
-    recursive = check ? true : false;
+    recursive = check;
 }
 
 void MainWindow::analysis()
@@ -138,10 +137,10 @@ void MainWindow::analysisThread()
     
     while (analyzing)
     {
-        library->analyzeMp3(analysesCount);
+        library.analyzeMp3(analysesCount);
         
-        int cutOffFrequency = library->getCutOffFrequency(analysesCount);
-        double rate = library->getRate(analysesCount);
+        int cutOffFrequency = library.getCutOffFrequency(analysesCount);
+        double rate = library.getRate(analysesCount);
         
         QColor color("white");
         
@@ -178,14 +177,14 @@ void MainWindow::analysisThread()
         
         model->insertRow(realRow, list);
         
-        if (++analysesCount == library->getListSize()) {
+        if (++analysesCount == library.getListSize()) {
             analysisButton->setEnabled(false);
             analysisButton->setText("Start MP3 analysis");
             closeThread();
         }
     }
     
-    if (analysesCount != library->getListSize())
+    if (analysesCount != library.getListSize())
         analysisButton->setEnabled(true);
     
     return;

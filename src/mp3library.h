@@ -12,13 +12,13 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <QString>
+
 #include "mp3file.h"
 
 class Mp3Library
 {    
 public:
-    Mp3Library(std::string _folder, bool _recursive) : folder(_folder), recursive(_recursive) {}
-    
     void fillList();
     bool analyzeMp3(int);
     
@@ -26,15 +26,16 @@ public:
     std::string getFilename(int) const;
     int getCutOffFrequency(int) const;
     double getRate(int) const;
+    void update(QString, bool);
     
 private:
     std::string folder;
     bool recursive;
     
-    std::list<std::string> list;
+    std::list<QString> list;
     std::vector<Mp3File*> mp3List;
     
-    bool seekMp3(std::string, bool);
+    bool seekMp3();
 };
 
 #endif // MP3LIBRARY_H

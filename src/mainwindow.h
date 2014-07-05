@@ -32,10 +32,11 @@ private:
     QCheckBox *recursiveBox;
     QTreeView *treeView;
     QStandardItemModel *model;
+    QString musicDirectory;
     
     int analysesCount = 0;
     
-    Mp3Library * library;
+    Mp3Library library;
     
     std::thread *th = nullptr;
     

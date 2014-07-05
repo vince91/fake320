@@ -11,6 +11,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <cstdlib>
+#include <QDirIterator>
 
 #if defined(__MINGW32__) || defined(__MINGW64__)
 #include <windows.h>
@@ -29,25 +30,25 @@ void Mp3Library::fillList()
     
     std::cout << "Opening folder: " << folder << std::endl;
 
-    seekMp3(folder, recursive);
+    seekMp3();
     
     av_register_all();
     
     std::cout << list.size() << " files in the list before cleaning\n";
     
-    for (std::list<std::string>::iterator it = list.begin(); it != list.end(); ++it) {
+    for (std::list<QString>::iterator it = list.begin(); it != list.end(); ++it) {
         formatContext = NULL;
         keep = false;
         
         //std::cout << *it << std::endl;
         
                 /* open input file, and allocate format context */
-        if (avformat_open_input(&formatContext, it->c_str(), NULL, NULL) < 0) {
-            std::cerr << "Could not open source file (" << it->c_str() << ")\n";
+        if (avformat_open_input(&formatContext, it->toStdString().c_str(), NULL, NULL) < 0) {
+            std::cerr << "Could not open source file (" << it->toStdString().c_str() << ")\n";
         }
         else {
             if (avformat_find_stream_info(formatContext, NULL) < 0) {
-                std::cerr << "Could not find stream information (" << it->c_str() << "\n";
+                std::cerr << "Could not find stream information (" << it->toStdString().c_str() << "\n";
             }
             else {
                 //av_dump_format(formatContext, 0, it->c_str(), 0);
@@ -68,87 +69,21 @@ void Mp3Library::fillList()
     
     std::cout << list.size() << " files in the list after cleaning\n\n";
     
-    for (std::list<std::string>::iterator it = list.begin(); it != list.end(); ++it) {
-        mp3List.push_back(new Mp3File(*it));
+    for (std::list<QString>::iterator it = list.begin(); it != list.end(); ++it) {
+        mp3List.push_back(new Mp3File((*it).toStdString()));
     }
 }
 
-bool Mp3Library::seekMp3(std::string _folder, bool recursive)
+bool Mp3Library::seekMp3()
 {
     /* adds all '*.mp3' contained in folder (recursively or not) to list */
-    std::string file;
-    std::vector<std::string> folderList;
+    QDirIterator dirIterator(QString(folder.c_str()), recursive?QDirIterator::Subdirectories:QDirIterator::NoIteratorFlags);
     
-#if defined(__MINGW32__) || defined(__MINGW64__)
-
-    WIN32_FIND_DATA findData;
-    HANDLE handle;
-    std::string folderTemp;
-
-    folderTemp = _folder + "/*";
-
-    wchar_t filename[4096] = {0};
-    MultiByteToWideChar(CP_ACP, 0, folderTemp.c_str(), folderTemp.size(), filename, folderTemp.size());
-    handle = FindFirstFile(filename, &findData);
-
-    if (handle == INVALID_HANDLE_VALUE) {
-        std::cout << "FindFirstFile failed: " << GetLastError() << std::endl;
-        return false;
-    }
-
-    do {
-
-        char mbstr[4096];
-
-        WideCharToMultiByte(CP_ACP, 0, findData.cFileName, -1, mbstr, 4096, NULL, NULL);
-
-        if (strcmp(mbstr, ".")  != 0 && strcmp(mbstr, "..") != 0) {
-
-            file = _folder + "/" + mbstr;
-
-            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                folderList.push_back(file);
-            else if (file.substr(file.size()-4, file.size()-1).compare(".mp3") == 0)
-                list.push_back(file);
-
-        }
-
-
-    }
-    while(handle != INVALID_HANDLE_VALUE && FindNextFile(handle, &findData) == TRUE);
-
-       FindClose(handle);
-    
-#else
-    DIR *d = NULL;
-    struct dirent *dir;
-    
-    if ((d = opendir(_folder.c_str())) == NULL) {
-        std::cerr << "Couldn't open dir: " << _folder << ", errno: " << errno << std::endl;
-        return false;
-    }
-    
-    while ((dir = readdir(d)) != NULL) {
-        
-        file = _folder + "/" + dir->d_name;
-        
-        if (dir->d_type == DT_DIR && strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0) {
-            folderList.push_back(file);
-        }
-        else if (dir->d_type == DT_REG) {
-            if(file.substr(file.size()-4, file.size()-1).compare(".mp3") == 0)
-                list.push_back(file);
-        }
-        
-    }
-    
-    closedir(d);
-#endif //#ifdef MINGW
-    
-    if (recursive) {
-        for (std::vector<std::string>::iterator it = folderList.begin(); it != folderList.end(); ++it) {
-            seekMp3(*it, true);
-        }
+    while (dirIterator.hasNext()) {
+        dirIterator.next();
+        if (QFileInfo(dirIterator.filePath()).isFile())
+            if (QFileInfo(dirIterator.filePath()).suffix() == "mp3")
+                list.push_back(dirIterator.filePath());
     }
     
     return true;
@@ -194,4 +129,13 @@ double Mp3Library::getRate(int i) const
         return mp3List[i]->getRate();
     }  
     return -1;
+}
+
+void Mp3Library::update(QString _folder, bool _recursive)
+{
+    list.clear();
+    mp3List.clear();
+    
+    folder = _folder.toStdString();
+    recursive = _recursive;
 }
